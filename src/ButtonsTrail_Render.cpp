@@ -9,17 +9,6 @@ using PD = Pokitto::Display;
 void Game::renderBoard() {
 
 
-    // // Render falling player ..
-                
-    // if (fallingPlayer.isActive()) {
-
-    //     PD::drawBitmap(Constants::Board_XOffset + (fallingPlayer.getX() * Constants::CellWidth_PlusBorder), 
-    //                     Constants::Board_YOffset + (fallingPlayer.getY() * Constants::CellHeight_PlusBorder) + fallingPlayer.getYOffset() + this->gameStats.yOffset, 
-    //                     Images::Player_Dying);
-        
-    // }
-
-
     // Render falling tiles ..
                 
     for (FallingTile &fallingTile : fallingTiles) {
@@ -120,10 +109,6 @@ void Game::renderBoard() {
 
             }
     
-            // PD::drawBitmap(Constants::Board_XOffset + (player.getXOld() * Constants::CellWidth_PlusBorder), 
-            //                Constants::Board_YOffset + (player.getYOld() * Constants::CellHeight_PlusBorder) + player.getYDyingOffset_2() + this->gameStats.yOffset - 3, 
-            //                Images::Player_Dying);
-
         }
         else {
 

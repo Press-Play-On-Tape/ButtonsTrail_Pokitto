@@ -1,6 +1,6 @@
 #pragma once
 
-#define _SOUNDS
+#define SOUNDS
 #define COOKIE_INITIALISED 33
 
 namespace Constants {
@@ -53,4 +53,11 @@ enum class Direction : uint8_t {
     Up,
     Down,
 };
+
+enum class SoundEffect : uint8_t {
+    Tone_00,
+    Tone_01,
+    Tone_02,
+};
+
 

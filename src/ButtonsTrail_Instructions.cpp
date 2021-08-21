@@ -98,7 +98,7 @@ void Game::instructions() {
 
     // Render page ..
 
-    PD::drawBitmap(0, 0, Images::Instructions);
+    PD::drawBitmap(39, 7, Images::Instructions);
     PD::setColor(6);
 
     switch (this->gameStats.instruction) {

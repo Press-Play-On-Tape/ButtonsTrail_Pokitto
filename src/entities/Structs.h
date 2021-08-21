@@ -33,7 +33,9 @@ struct GameStats {
         uint8_t instruction = 0;
         uint8_t start = 0;
         uint8_t exit = 0;
+        
         bool endOfGame = false;
+        uint8_t endOfGameCount = 0;
 
         void reset() {
         }

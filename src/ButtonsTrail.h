@@ -8,6 +8,7 @@
 #include "utils/Enums.h"
 #include "utils/GameCookie.h"
 #include "puzzles/Puzzles.h"
+#include "sounds/Sounds.h"
 
 using PC=Pokitto::Core;
 using PD=Pokitto::Display;
@@ -57,6 +58,10 @@ class Game {
         void updateAndRenderParticles();
         void renderBoard();
         void renderHUD();
+
+        void playTheme(uint8_t trackNumber);
+        void muteTheme();
+        void playSoundEffect(SoundEffect soundEffect);
 
 };
 

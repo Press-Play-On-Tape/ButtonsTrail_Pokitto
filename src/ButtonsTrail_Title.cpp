@@ -5,9 +5,6 @@
 using PC = Pokitto::Core;
 using PD = Pokitto::Display;
 
-using PC = Pokitto::Core;
-using PD = Pokitto::Display;
-
 
 // ----------------------------------------------------------------------------
 //  Handle state updates .. 

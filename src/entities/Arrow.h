@@ -8,19 +8,19 @@ class Arrow {
 
     private:
 
-        uint8_t x;
-        uint8_t y;
+        int8_t x;
+        int8_t y;
         uint8_t yOffset = 0;
         Direction direction = Direction::Down;
 
     public:
 
-        uint8_t getX()                          { return this->x; }
-        uint8_t getY()                          { return this->y; }
+        int8_t getX()                           { return this->x; }
+        int8_t getY()                           { return this->y; }
         uint8_t getYOffset()                    { return this->yOffset; }
 
-        void setX(uint8_t val)                  { this->x = val; }
-        void setY(uint8_t val)                  { this->y = val; }
+        void setX(int8_t val)                   { this->x = val; }
+        void setY(int8_t val)                   { this->y = val; }
         void getYOffset(uint8_t val)            { this->yOffset = val; }
 
     public:

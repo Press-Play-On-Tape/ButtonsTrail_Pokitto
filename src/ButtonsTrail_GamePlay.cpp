@@ -1,5 +1,4 @@
 #include "ButtonsTrail.h"
-#include "images/images.h"
 #include "utils/Utils.h"
 
 using PC = Pokitto::Core;
@@ -18,6 +17,7 @@ void Game::game_Init() {
     this->gameStats.xOffset = -132;
     this->gameStats.exit = 0;
     this->gameStats.endOfGame = false;
+    this->gameStats.endOfGameCount = 0;
     
 }   
 
@@ -27,13 +27,41 @@ void Game::game_Init() {
 //
 void Game::game() {
 
+    uint8_t stars = 0;
+
     if (endOfGame() && !this->gameStats.endOfGame) {
 
         this->gameStats.endOfGame = true;
+        this->gameStats.endOfGameCount = 0;
+
+
+        // Calculate stars ..
+
+        if (this->gameStats.moves < this->gameStats.minimumMoves + 2)           { stars = 3; }
+        else if (this->gameStats.moves < this->gameStats.minimumMoves * 1.5)    { stars = 2; }
+        else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { stars = 1; }
+        else                                                                    { stars = 0; }
 
         #ifdef SOUNDS
-        sound.tones(Sounds::Positive);
+        //sound.tones(Sounds::Positive);
         #endif
+
+    }
+    else {
+
+        if (this->gameStats.endOfGame && this->gameStats.endOfGameCount < 120) {
+
+            this->gameStats.endOfGameCount++;
+
+            switch (this->gameStats.endOfGameCount) {
+
+                case 25: this->playSoundEffect(SoundEffect::Tone_00); break;
+                case 50: this->playSoundEffect(SoundEffect::Tone_01); break;
+                case 75: this->playSoundEffect(SoundEffect::Tone_02); break;
+
+            }
+
+        }
 
     }
 
@@ -106,7 +134,7 @@ void Game::game() {
         if (this->gameStats.xOffset == 0) {
 
             #ifdef SOUNDS
-            sound.tones(Sounds::Death);
+            //sound.tones(Sounds::Death);
             #endif
 
         }
@@ -161,9 +189,26 @@ void Game::game() {
         else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { stars = 1; }
         else                                                                    { stars = 0; }
 
-        PD::drawBitmap(91, 66, (stars > 0 ? Images::Star_Filled : Images::Star_Hollow));
-        PD::drawBitmap(105, 66, (stars > 1 ? Images::Star_Filled : Images::Star_Hollow));
-        PD::drawBitmap(119, 66, (stars > 2 ? Images::Star_Filled : Images::Star_Hollow));
+        PD::drawBitmap( 91, 66, (stars > 0 && this->gameStats.endOfGameCount >= 25 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+        PD::drawBitmap(105, 66, (stars > 1 && this->gameStats.endOfGameCount >= 50 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+        PD::drawBitmap(119, 66, (stars > 2 && this->gameStats.endOfGameCount >= 75 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+
+        if (gameStats.endOfGameCount == 0) {
+
+            if (this->gameStats.level + 1 < Puzzles::Count) {
+
+                PD::drawBitmap(55, 80, Images::Congratulations);
+                this->cookie->levelCurrent = this->gameStats.level + 1;
+                if (this->gameStats.maxLevel < this->gameStats.level + 1) {
+                    this->cookie->levelMax = this->gameStats.level + 1;
+                }
+
+            }
+
+            this->cookie->levelRating[this->gameStats.level] = stars;
+            this->cookie->saveCookie();
+
+        }
 
         if (this->gameStats.level + 1 == Puzzles::Count) {
 
@@ -176,15 +221,8 @@ void Game::game() {
         else {
 
             PD::drawBitmap(55, 80, Images::Congratulations);
-            this->cookie->levelCurrent = this->gameStats.level + 1;
-            if (this->gameStats.maxLevel < this->gameStats.level + 1) {
-                this->cookie->levelMax = this->gameStats.level + 1;
-            }
 
         }
-
-        this->cookie->levelRating[this->gameStats.level] = stars;
-        this->cookie->saveCookie();
 
         if (PC::buttons.pressed(BTN_A)) {
 
@@ -215,7 +253,7 @@ void Game::removeTile() {
         case Tiles::NormalFloor:
 
             #ifdef SOUNDS
-            sound.tones(Sounds::Tone_01);
+            //sound.tones(Sounds::Tone_01);
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::None);
@@ -236,7 +274,7 @@ void Game::removeTile() {
         case Tiles::DoubleFloor:
 
             #ifdef SOUNDS
-            sound.tones(Sounds::Tone_02);
+            //sound.tones(Sounds::Tone_02);
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::NormalFloor);
@@ -245,7 +283,7 @@ void Game::removeTile() {
         case Tiles::Button1:
 
             #ifdef SOUNDS
-            sound.tones(Sounds::Tone_03);
+            //sound.tones(Sounds::Tone_03);
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button2);
@@ -254,7 +292,7 @@ void Game::removeTile() {
         case Tiles::Button2:
 
             #ifdef SOUNDS
-            sound.tones(Sounds::Tone_03);
+            //sound.tones(Sounds::Tone_03);
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button1);
@@ -262,7 +300,7 @@ void Game::removeTile() {
 
         default: 
             #ifdef SOUNDS
-            sound.tones(Sounds::Tone_01);
+            //sound.tones(Sounds::Tone_01);
             #endif
             break;
 
@@ -279,8 +317,8 @@ void Game::initGame(uint8_t level) {
 
     // Retrieve player starting position ..
 
-    uint8_t startX = puzzle[idx++];
-    uint8_t startY = puzzle[idx++];
+    int8_t startX = puzzle[idx++];
+    int8_t startY = puzzle[idx++];
 
     player.init(startX, startY);
 
@@ -332,15 +370,28 @@ void Game::initGame(uint8_t level) {
 
     // If last row is all zeroes we can render the board down 6px ..
 
-    uint8_t count = 0;
+    uint8_t blankRow = 0;
 
-    for (uint16_t x = 0; x < Constants::BoardWidth; x++){
+    for (uint16_t y = Constants::BoardHeight - 1; y > 0; y--) {
 
-        count = count + (board[Constants::BoardHeight - 1][x] == 0 ? 1 : 0);
+        uint8_t count = 0;
+
+        for (uint16_t x = 0; x < Constants::BoardWidth; x++){
+
+            count = count + (board[y][x] == static_cast<uint8_t>(Tiles::None) ? 1 : 0);
+
+        }
+
+        if (count == Constants::BoardWidth) {
+            blankRow++;
+        }
+        else {
+            break;
+        }
 
     }
 
-    this->gameStats.yOffset = count == Constants::BoardWidth ? 6 : 0;
+    this->gameStats.yOffset = 20 + (blankRow * Constants::CellHeight_PlusBorder / 2);
 
 }
 
