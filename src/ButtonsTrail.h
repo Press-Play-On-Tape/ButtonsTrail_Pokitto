@@ -54,7 +54,7 @@ class Game {
         void removeTile();
         void initGame(uint8_t level);
         bool endOfGame();
-        void launchParticles(int16_t x, int16_t y);
+        void launchParticles(int16_t x, int16_t y, bool firstHalf);
         void updateAndRenderParticles();
         void renderBoard();
         void renderHUD();

@@ -14,7 +14,7 @@ void Game::game_Init() {
     this->gameStats.reset();
     this->gameState = GameState::Game;
 
-    this->gameStats.xOffset = -132;
+    this->gameStats.xOffset = 224;
     this->gameStats.exit = 0;
     this->gameStats.endOfGame = false;
     this->gameStats.endOfGameCount = 0;
@@ -27,8 +27,6 @@ void Game::game_Init() {
 //
 void Game::game() {
 
-    uint8_t stars = 0;
-
     if (endOfGame() && !this->gameStats.endOfGame) {
 
         this->gameStats.endOfGame = true;
@@ -37,10 +35,10 @@ void Game::game() {
 
         // Calculate stars ..
 
-        if (this->gameStats.moves < this->gameStats.minimumMoves + 2)           { stars = 3; }
-        else if (this->gameStats.moves < this->gameStats.minimumMoves * 1.5)    { stars = 2; }
-        else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { stars = 1; }
-        else                                                                    { stars = 0; }
+        if (this->gameStats.moves < this->gameStats.minimumMoves + 2)           { this->gameStats.stars = 3; }
+        else if (this->gameStats.moves < this->gameStats.minimumMoves * 1.5)    { this->gameStats.stars = 2; }
+        else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { this->gameStats.stars = 1; }
+        else                                                                    { this->gameStats.stars = 0; }
 
         #ifdef SOUNDS
         //sound.tones(Sounds::Positive);
@@ -55,9 +53,9 @@ void Game::game() {
 
             switch (this->gameStats.endOfGameCount) {
 
-                case 25: this->playSoundEffect(SoundEffect::Tone_00); break;
-                case 50: this->playSoundEffect(SoundEffect::Tone_01); break;
-                case 75: this->playSoundEffect(SoundEffect::Tone_02); break;
+                case 25: if (this->gameStats.stars > 0) this->playSoundEffect(SoundEffect::Tone_00); break;
+                case 50: if (this->gameStats.stars > 1) this->playSoundEffect(SoundEffect::Tone_01); break;
+                case 75: if (this->gameStats.stars > 2) this->playSoundEffect(SoundEffect::Tone_02); break;
 
             }
 
@@ -70,21 +68,22 @@ void Game::game() {
 
     switch (this->gameStats.xOffset) {
 
-        case -132:
-            initGame(this->gameStats.level);
-            this->gameStats.xOffset = this->gameStats.xOffset + 4;
+        case -220:
+            this->gameStats.xOffset = this->gameStats.xOffset - 4;
+            this->gameStats.xOffset = 224;
             break;
 
-        case -131 ... -1:
-            this->gameStats.xOffset = this->gameStats.xOffset + 4;
+        case -219 ... -1:
+            this->gameStats.xOffset = this->gameStats.xOffset - 4;
             break;
 
-        case 1 ... 127:
-            this->gameStats.xOffset = this->gameStats.xOffset + 4;
+        case 1 ... 223:
+            this->gameStats.xOffset = this->gameStats.xOffset - 4;
             break;
 
-        case 128 ... 256:
-            this->gameStats.xOffset = -132;
+        case 224:
+            this->initGame(this->gameStats.level);
+            this->gameStats.xOffset = this->gameStats.xOffset - 4;
             break;
 
         default: 
@@ -156,7 +155,7 @@ void Game::game() {
 
     if (this->player.update() && this->gameStats.xOffset == 0) {
     
-        this->gameStats.xOffset = 4;
+        this->gameStats.xOffset = -4;
 
     }
                           
@@ -182,22 +181,16 @@ void Game::game() {
 
     if (this->gameStats.endOfGame) {
 
-        uint8_t stars = 0;
 
-        if (this->gameStats.moves < this->gameStats.minimumMoves + 2)           { stars = 3; }
-        else if (this->gameStats.moves < this->gameStats.minimumMoves * 1.5)    { stars = 2; }
-        else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { stars = 1; }
-        else                                                                    { stars = 0; }
-
-        PD::drawBitmap( 91, 66, (stars > 0 && this->gameStats.endOfGameCount >= 25 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
-        PD::drawBitmap(105, 66, (stars > 1 && this->gameStats.endOfGameCount >= 50 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
-        PD::drawBitmap(119, 66, (stars > 2 && this->gameStats.endOfGameCount >= 75 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+        PD::drawBitmap( 91, 84, (this->gameStats.stars > 0 && this->gameStats.endOfGameCount >= 25 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+        PD::drawBitmap(105, 84, (this->gameStats.stars > 1 && this->gameStats.endOfGameCount >= 50 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
+        PD::drawBitmap(119, 84, (this->gameStats.stars > 2 && this->gameStats.endOfGameCount >= 75 ? Images::Star_Filled : Images::Star_Hollow_Disabled));
 
         if (gameStats.endOfGameCount == 0) {
 
             if (this->gameStats.level + 1 < Puzzles::Count) {
 
-                PD::drawBitmap(55, 80, Images::Congratulations);
+                PD::drawBitmap(55, 66, Images::Congratulations);
                 this->cookie->levelCurrent = this->gameStats.level + 1;
                 if (this->gameStats.maxLevel < this->gameStats.level + 1) {
                     this->cookie->levelMax = this->gameStats.level + 1;
@@ -205,22 +198,22 @@ void Game::game() {
 
             }
 
-            this->cookie->levelRating[this->gameStats.level] = stars;
+            this->cookie->levelRating[this->gameStats.level] = this->gameStats.stars;
             this->cookie->saveCookie();
 
         }
 
         if (this->gameStats.level + 1 == Puzzles::Count) {
 
-            PD::drawBitmap(75, 80, Images::EndOfGame);
+            PD::drawBitmap(75, 66, Images::EndOfGame);
             updateAndRenderParticles();
 
-            if (PC::frameCount % 32 == 0) launchParticles(random(32, 97), random(16, 48));
+            if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
 
         }
         else {
 
-            PD::drawBitmap(55, 80, Images::Congratulations);
+            PD::drawBitmap(55, 66, Images::Congratulations);
 
         }
 
@@ -233,7 +226,7 @@ void Game::game() {
             }
             else {
 
-                this->gameStats.xOffset = 4;
+                this->gameStats.xOffset = -4;
                 this->gameStats.level++;
                 this->gameStats.moves = 0;
                 this->gameStats.endOfGame = false;
@@ -364,7 +357,7 @@ void Game::initGame(uint8_t level) {
 
     // Scroll in ..
 
-    this->gameStats.xOffset = -132;
+    this->gameStats.xOffset = 224;
     this->gameStats.endOfGame = false;
 
 
@@ -392,6 +385,7 @@ void Game::initGame(uint8_t level) {
     }
 
     this->gameStats.yOffset = 20 + (blankRow * Constants::CellHeight_PlusBorder / 2);
+    this->gameStats.stars = 0;
 
 }
 

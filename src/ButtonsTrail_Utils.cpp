@@ -50,14 +50,7 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
     switch (soundEffect) {
         
         case SoundEffect::Tone_00:
-        {
-  auto note = Audio::Note(10)
-                    .wave(2)
-                    .duration(750)
-                    .volume(127);        
-note.play();
-        }
-         //   Audio::play<1>(Sounds::sfx_Tone_00);    
+           Audio::play<1>(Sounds::sfx_Tone_00);    
             break;
         
         case SoundEffect::Tone_01:

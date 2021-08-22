@@ -29,6 +29,12 @@ void Game::title_Init() {
 void Game::title() {
 
 
+
+    updateAndRenderParticles();
+
+    if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
+
+
     // Handle player actions ..
 
     if (PC::buttons.pressed(BTN_LEFT)) { 

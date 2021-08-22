@@ -22,7 +22,7 @@ namespace Constants {
     constexpr uint8_t CellHeight_Zoom_PlusBorder = 10;
     constexpr uint8_t Board_XOffset_Zoom = 4;
     constexpr uint8_t Board_YOffset_Zoom = 15;
-    constexpr uint8_t ParticlesMax = 30;
+    constexpr uint8_t ParticlesMax = 50;
 
 }
 
