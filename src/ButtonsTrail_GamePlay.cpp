@@ -41,7 +41,7 @@ void Game::game() {
         else                                                                    { this->gameStats.stars = 0; }
 
         #ifdef SOUNDS
-        //sound.tones(Sounds::Positive);
+        this->playSoundEffect(SoundEffect::Tone_04);
         #endif
 
     }
@@ -133,7 +133,7 @@ void Game::game() {
         if (this->gameStats.xOffset == 0) {
 
             #ifdef SOUNDS
-            //sound.tones(Sounds::Death);
+            this->playSoundEffect(SoundEffect::Tone_07);
             #endif
 
         }
@@ -241,12 +241,30 @@ void Game::game() {
 
 void Game::removeTile() {
 
+    bool soundPlayed = false;
+
+    switch (static_cast<Tiles>(board[player.getYNew()][player.getXNew()])) {
+
+        case Tiles::Button1:
+
+            #ifdef SOUNDS
+            this->playSoundEffect(SoundEffect::Tone_03);
+            soundPlayed = true;
+            #endif
+
+            break;
+
+        default: break;
+
+    }
+
     switch (static_cast<Tiles>(board[player.getY()][player.getX()])) {
 
         case Tiles::NormalFloor:
 
             #ifdef SOUNDS
-            //sound.tones(Sounds::Tone_01);
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_05);
+            soundPlayed = true;
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::None);
@@ -267,7 +285,8 @@ void Game::removeTile() {
         case Tiles::DoubleFloor:
 
             #ifdef SOUNDS
-            //sound.tones(Sounds::Tone_02);
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            soundPlayed = true;
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::NormalFloor);
@@ -276,7 +295,8 @@ void Game::removeTile() {
         case Tiles::Button1:
 
             #ifdef SOUNDS
-            //sound.tones(Sounds::Tone_03);
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            soundPlayed = true;
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button2);
@@ -285,16 +305,14 @@ void Game::removeTile() {
         case Tiles::Button2:
 
             #ifdef SOUNDS
-            //sound.tones(Sounds::Tone_03);
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            soundPlayed = true;
             #endif
 
             board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button1);
             break;
 
         default: 
-            #ifdef SOUNDS
-            //sound.tones(Sounds::Tone_01);
-            #endif
             break;
 
     }

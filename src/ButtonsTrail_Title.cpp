@@ -19,7 +19,8 @@ void Game::title_Init() {
     this->gameStats.level = curlevel;
     
     this->gameState = GameState::Title;
-    
+    this->playTheme();
+
 }   
 
 

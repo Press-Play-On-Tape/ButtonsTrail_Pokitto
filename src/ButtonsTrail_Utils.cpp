@@ -5,30 +5,18 @@ using PC = Pokitto::Core;
 using PD = Pokitto::Display;
 
 
-void Game::playTheme(uint8_t trackNumber) {
+void Game::playTheme() {
 
     #ifdef SOUNDS
 
-    // constexpr char themes[3][17] = { "music/Hex_01.raw", "music/Hex_02.raw", "music/Hex_03.raw" };
+    constexpr char themes[1][19] = { "music/DarkB_01.raw" };
 
-    // switch (this->cookie->sfx) {
+    //SoundTheme themeToPlay = static_cast<SoundTheme>(static_cast<uint8_t>(theme) + (playHellModeTrack ? (this->cookieSaveGame->gameC ? 1 : 0) : 0));
 
-    //     case SoundEffects::Music:
-    //     case SoundEffects::Both:
-
-    //         if (this->mainThemeFile.openRO(themes[trackNumber])) {
-    //             auto& music = Audio::play<0>(mainThemeFile);
-    //             music.setLoop(true);
-    //         }
-
-    //         break;
-
-    //     case SoundEffects::SFX:
-    //     case SoundEffects::None:
-
-    //         this->muteTheme();
-
-    // }
+    if (this->mainThemeFile.openRO(themes[0])) {
+        auto& music = Audio::play<0>(this->mainThemeFile);
+        music.setLoop(true);
+    }
 
     #endif
 
@@ -50,7 +38,7 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
     switch (soundEffect) {
         
         case SoundEffect::Tone_00:
-           Audio::play<1>(Sounds::sfx_Tone_00);    
+            Audio::play<1>(Sounds::sfx_Tone_00);    
             break;
         
         case SoundEffect::Tone_01:
@@ -60,7 +48,27 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
         case SoundEffect::Tone_02:
             Audio::play<1>(Sounds::sfx_Tone_02);    
             break;
-                
+        
+        case SoundEffect::Tone_03:
+            Audio::play<1>(Sounds::sfx_Tone_03);    
+            break;
+                     
+        case SoundEffect::Tone_04:
+            Audio::play<1>(Sounds::sfx_Tone_04);    
+            break;               
+                     
+        case SoundEffect::Tone_05:
+            Audio::play<1>(Sounds::sfx_Tone_05);    
+            break;               
+                     
+        case SoundEffect::Tone_06:
+            Audio::play<1>(Sounds::sfx_Tone_06);    
+            break;               
+
+        case SoundEffect::Tone_07:
+            Audio::play<1>(Sounds::sfx_Tone_07);    
+            break;               
+
     }
 
     #endif

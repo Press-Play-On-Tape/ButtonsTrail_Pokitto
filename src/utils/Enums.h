@@ -58,6 +58,11 @@ enum class SoundEffect : uint8_t {
     Tone_00,
     Tone_01,
     Tone_02,
+    Tone_03,
+    Tone_04,
+    Tone_05,
+    Tone_06,
+    Tone_07,
 };
 
 

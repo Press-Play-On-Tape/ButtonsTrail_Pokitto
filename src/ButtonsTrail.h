@@ -32,6 +32,7 @@ class Game {
         Particle particles[Constants::ParticlesMax];
 
         GameCookie *cookie;
+        File mainThemeFile;
 
 
     public:
@@ -59,7 +60,7 @@ class Game {
         void renderBoard();
         void renderHUD();
 
-        void playTheme(uint8_t trackNumber);
+        void playTheme();
         void muteTheme();
         void playSoundEffect(SoundEffect soundEffect);
 
