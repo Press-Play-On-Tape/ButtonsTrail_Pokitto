@@ -14,7 +14,7 @@ void Game::title_Init() {
     uint8_t maxLevel = this->cookie->levelMax;
     uint8_t curlevel = this->cookie->levelCurrent;
 
-    this->gameStats.titleSel = maxLevel > 0 ? 1 : 0;
+    this->gameStats.titleSel = maxLevel > 0 ? TitleScreenMode::LevelSelect : TitleScreenMode::NewGame;
     this->gameStats.maxLevel = maxLevel;
     this->gameStats.level = curlevel;
     
@@ -29,8 +29,6 @@ void Game::title_Init() {
 //
 void Game::title() {
 
-
-
     updateAndRenderParticles();
 
     if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
@@ -38,21 +36,78 @@ void Game::title() {
 
     // Handle player actions ..
 
-    if (PC::buttons.pressed(BTN_LEFT)) { 
+    if (PC::buttons.pressed(BTN_LEFT) && this->gameStats.titleSel != TitleScreenMode::NewGame) { 
 
-        this->gameStats.titleSel = 0;
+        this->gameStats.titleSel--;
+
+    }         
+
+    if (PC::buttons.pressed(BTN_RIGHT)) {
+
+        switch (this->gameStats.titleSel) {
+            
+            case TitleScreenMode::NewGame:
+                if (this->gameStats.maxLevel > 0) { 
+                    this->gameStats.titleSel = TitleScreenMode::LevelSelect;
+                }
+                else {
+                    this->gameStats.titleSel = TitleScreenMode::SoundEffects;
+                }
+                break;
+
+            case TitleScreenMode::LevelSelect:
+                this->gameStats.titleSel++;
+                break;
+
+            default: break;
+
+        }
 
     }         
 
-    if (PC::buttons.pressed(BTN_RIGHT) && this->gameStats.maxLevel > 0) { 
+    if (this->gameStats.titleSel == TitleScreenMode::SoundEffects) {
 
-        this->gameStats.titleSel = 1;
+        if (PC::buttons.pressed(BTN_UP)) {
 
-    }         
+            this->cookie->sfx--;
+            this->cookie->saveCookie();
+
+            if (this->cookie->sfx != SoundEffects::Both && this->cookie->sfx != SoundEffects::Music) {
+
+                this->muteTheme();
+                
+            }
+            else {
+
+                this->playTheme();
+
+            }
+
+        }
+
+        if (PC::buttons.pressed(BTN_DOWN)) {
+
+            this->cookie->sfx++;
+            this->cookie->saveCookie();
+
+            if (this->cookie->sfx != SoundEffects::Both && this->cookie->sfx != SoundEffects::Music) {
+
+                this->muteTheme();
+                
+            }
+            else {
+
+                this->playTheme();
+                
+            }
+            
+        }
+
+    }
 
     if (PC::buttons.pressed(BTN_A)) { 
 
-        if (gameStats.titleSel == 0) { 
+        if (gameStats.titleSel == TitleScreenMode::NewGame) { 
             this->gameStats.level = 0;
             this->gameStats.instruction = 0;
             this->gameState = GameState::Instructions_Init;
@@ -84,7 +139,38 @@ void Game::title() {
 
     }
 
+    switch (this->cookie->sfx) {
+
+        case SoundEffects::Music:
+            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_Music_White: Images::Sound_Music_Grey);
+            break;
+
+        case SoundEffects::SFX:
+            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_SFX_White: Images::Sound_SFX_Grey);
+            break;
+
+        case SoundEffects::Both:
+            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects? Images::Sound_Both_White: Images::Sound_Both_Grey);
+            break;
+
+        default:
+            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_None_White: Images::Sound_None_Grey);
+            break;
+
+    }
+
     uint8_t frame = (PC::frameCount % 60) / 12;
-    PD::drawBitmap(36 + (gameStats.titleSel * 79), 113, Images::Skulls_Title[frame]);
+
+    switch (this->gameStats.titleSel) {
+
+        case TitleScreenMode::NewGame:
+            PD::drawBitmap(36, 113, Images::Skulls_Title[frame]);
+            break;
+
+        case TitleScreenMode::LevelSelect:
+            PD::drawBitmap(116, 113, Images::Skulls_Title[frame]);
+            break;
+            
+    }
 
 }

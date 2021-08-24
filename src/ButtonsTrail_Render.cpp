@@ -39,20 +39,20 @@ void Game::renderBoard() {
                 case Tiles::DoubleFloor:
                 case Tiles::SolidFloor1:
                 case Tiles::SolidFloor2:
-                case Tiles::Button2:
+                case Tiles::Button1:
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
                                    Images::Tiles[board[y][x]]);
                     break;
 
-                case Tiles::Button1:
+                case Tiles::Button2:
                     {
                         uint8_t idx = (PC::frameCount % 72);            
                         idx = (idx >= 24 ? 0 : idx / 8);
 
                         PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                        Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                       Images::Tile_05[idx]);
+                                       Images::Tile_06[idx]);
 
                     }
 

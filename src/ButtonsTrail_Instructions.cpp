@@ -151,14 +151,14 @@ void Game::instructions() {
                 PD::setCursor(6, 65);
                 PD::print("Button Switches");
 
-                uint8_t idx = (PC::frameCount % 72);
-                idx = (idx >= 24 ? 0 : idx / 8);
-
-                PD::drawBitmap(6, 79, Images::Tile_05[idx]);
+                PD::drawBitmap(6, 79, Images::Tiles[static_cast<uint8_t>(Tiles::Button1)]);
                 PD::setCursor(26, 81);
                 PD::print("Off: switch is in OFF position.");
 
-                PD::drawBitmap(6, 99, Images::Tiles[static_cast<uint8_t>(Tiles::Button2)]);
+                uint8_t idx = (PC::frameCount % 72);
+                idx = (idx >= 24 ? 0 : idx / 8);
+
+                PD::drawBitmap(6, 99, Images::Tile_06[idx]);
                 PD::setCursor(26, 101);
                 PD::print("On: switch is in ON position.");
 
