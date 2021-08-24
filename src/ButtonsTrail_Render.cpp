@@ -39,27 +39,23 @@ void Game::renderBoard() {
                 case Tiles::DoubleFloor:
                 case Tiles::SolidFloor1:
                 case Tiles::SolidFloor2:
-                    PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
-                                Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                Images::Tiles[board[y][x]]);
-                    break;
-
-                case Tiles::Button1:
-                    PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
-                                   Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                   Images::Tiles[static_cast<uint8_t>(Tiles::SolidFloor1)]);
-                    PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder) + 2, 
-                                   Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset + 2, 
-                                   Images::Skulls[0]);
-                    break;
-
                 case Tiles::Button2:
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                   Images::Tiles[static_cast<uint8_t>(Tiles::SolidFloor1)]);
-                    PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder) + 2, 
-                                   Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset + 2, 
-                                   Images::Skulls[(PC::frameCount % 60) / 12]);
+                                   Images::Tiles[board[y][x]]);
+                    break;
+
+                case Tiles::Button1:
+                    {
+                        uint8_t idx = (PC::frameCount % 72);            
+                        idx = (idx >= 24 ? 0 : idx / 8);
+
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                       Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
+                                       Images::Tile_05[idx]);
+
+                    }
+
                     break;
 
             }

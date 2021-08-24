@@ -144,32 +144,36 @@ void Game::instructions() {
             break;
 
         case 2:
-            PD::drawBitmap(136, 67, Images::Arrow_Left);
-            PD::drawBitmap(143, 67, Images::Arrow_Right);
+            {
+                PD::drawBitmap(136, 67, Images::Arrow_Left);
+                PD::drawBitmap(143, 67, Images::Arrow_Right);
 
-            PD::setCursor(6, 65);
-            PD::print("Button Switches");
+                PD::setCursor(6, 65);
+                PD::print("Button Switches");
 
-            PD::drawBitmap(6, 79, Images::Tiles[static_cast<uint8_t>(Tiles::SolidFloor1)]);
-            PD::drawBitmap(8, 81, Images::Skulls[0]);
-            PD::setCursor(26, 81);
-            PD::print("Off: switch is in OFF position.");
+                uint8_t idx = (PC::frameCount % 72);
+                idx = (idx >= 24 ? 0 : idx / 8);
 
-            PD::drawBitmap(6, 99, Images::Tiles[static_cast<uint8_t>(Tiles::SolidFloor1)]);
-            PD::drawBitmap(8, 101, Images::Skulls[(PC::frameCount % 60) / 12]);
-            PD::setCursor(26, 101);
-            PD::print("On: switch is in ON position.");
+                PD::drawBitmap(6, 79, Images::Tile_05[idx]);
+                PD::setCursor(26, 81);
+                PD::print("Off: switch is in OFF position.");
 
-            if (this->gameStats.start >= 80) {
-            
-                PD::setCursor(6, 129);
-                PD::print("Press A to start !");
+                PD::drawBitmap(6, 99, Images::Tiles[static_cast<uint8_t>(Tiles::Button2)]);
+                PD::setCursor(26, 101);
+                PD::print("On: switch is in ON position.");
 
-            }
-            else {
-            
-                PD::setCursor(6, 129);
-                PD::print("Hold B to quit.");
+                if (this->gameStats.start >= 80) {
+                
+                    PD::setCursor(6, 129);
+                    PD::print("Press A to start !");
+
+                }
+                else {
+                
+                    PD::setCursor(6, 129);
+                    PD::print("Hold B to quit.");
+
+                }
 
             }
 
