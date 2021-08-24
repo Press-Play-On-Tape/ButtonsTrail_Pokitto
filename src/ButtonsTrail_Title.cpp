@@ -38,7 +38,24 @@ void Game::title() {
 
     if (PC::buttons.pressed(BTN_LEFT) && this->gameStats.titleSel != TitleScreenMode::NewGame) { 
 
-        this->gameStats.titleSel--;
+        switch (this->gameStats.titleSel) {
+            
+            case TitleScreenMode::SoundEffects:
+                if (this->gameStats.maxLevel > 0) { 
+                    this->gameStats.titleSel = TitleScreenMode::LevelSelect;
+                }
+                else {
+                    this->gameStats.titleSel = TitleScreenMode::NewGame;
+                }
+                break;
+
+            case TitleScreenMode::LevelSelect:
+                this->gameStats.titleSel--;
+                break;
+
+            default: break;
+
+        }
 
     }         
 
@@ -104,6 +121,7 @@ void Game::title() {
         }
 
     }
+
 
     if (PC::buttons.pressed(BTN_A)) { 
 
