@@ -5,9 +5,9 @@
 
 namespace Constants {
 
-    constexpr uint8_t FallingTilesCount = 5;
+    constexpr uint8_t FallingTilesCount = 16;
     constexpr uint8_t BoardWidth = 15;
-    constexpr uint8_t BoardHeight = 6;
+    constexpr uint8_t BoardHeight = 9;
 
     // Normal
 
@@ -42,16 +42,27 @@ enum class GameState : uint8_t {
 enum class Tiles : uint8_t {
     None,           // 0
     NormalFloor,    // 1
-    SolidFloor1,    // 2
-    SolidFloor2,    // 3
+    SolidFloor,     // 2
+    LinkedFloor,    // 3
     DoubleFloor,    // 4
     Button1,        // 5
     Button2,        // 6
+    Gem_LinkedFloor,  // 7
+    Gem_NormalFloor,  // 8
+    Gem1_Only,  // 9
+    Gem2_Only,  // 10
+    Exit, // 11
+    Gem_SolidFloor,  // 12
 };
 
 enum class Direction : uint8_t {
     Up,
     Down,
+};
+
+enum class GameMode : uint8_t {
+    ButtonsTrail,
+    Valdi,
 };
 
 enum class SoundEffect : uint8_t {

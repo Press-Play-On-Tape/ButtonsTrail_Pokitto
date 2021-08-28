@@ -58,6 +58,12 @@ class Player {
 
     public:
 
+        bool isActive() { 
+
+            return this->x != 255;
+        
+        }
+
         uint8_t getImageIndex() {
 
             return this->yDyingOffset_1 / 10;

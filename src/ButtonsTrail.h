@@ -25,6 +25,7 @@ class Game {
         GameState gameState = GameState::Splash;
         GameStats gameStats;
         Player player;
+        Player other;
         FallingTile fallingTiles[Constants::FallingTilesCount];
         Arrow arrows[3];
 
@@ -52,7 +53,7 @@ class Game {
         void title_Init();
         void title();
 
-        void removeTile();
+        void removeTile(Player &character);
         void initGame(uint8_t level);
         bool endOfGame();
         void launchParticles(int16_t x, int16_t y, bool firstHalf);
@@ -63,6 +64,7 @@ class Game {
         void playTheme();
         void muteTheme();
         void playSoundEffect(SoundEffect soundEffect);
+        void printBoard();
 
 };
 

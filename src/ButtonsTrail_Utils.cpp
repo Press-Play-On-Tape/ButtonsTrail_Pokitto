@@ -97,3 +97,188 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
     #endif
 
 }    
+
+
+void Game::initGame(uint8_t level) {
+
+    const uint8_t *puzzle = Puzzles::puzzles[level];
+
+    uint16_t idx = 0;
+
+    int8_t mode = puzzle[idx++];
+    this->gameStats.mode = static_cast<GameMode>(mode);
+
+    // Retrieve player starting position ..
+
+    int8_t startX = puzzle[idx++];
+    int8_t startY = puzzle[idx++];
+
+    this->player.init(startX, startY);
+
+
+    // Retrieve other player starting position ..
+
+    startX = puzzle[idx++];
+    startY = puzzle[idx++];
+
+    this->other.init(startX, startY);
+
+
+    // Retrieve arrows (if defined) ..
+
+    startX = puzzle[idx++];
+    startY = puzzle[idx++];
+
+    this->arrows[0].init(startX, startY);
+
+    startX = puzzle[idx++];
+    startY = puzzle[idx++];
+
+
+    // Minimium number of moves
+
+    this->gameStats.minimumMoves = puzzle[idx++];
+
+    this->arrows[1].init(startX, startY);
+
+    for (uint16_t y = 0; y < Constants::BoardHeight; y++){
+
+        for (uint16_t x = 0; x < Constants::BoardWidth; x++){
+
+            uint8_t data = puzzle[idx++];
+
+            this->board[y][x] = data;
+
+        }
+
+    }
+
+
+    // Clear falling tiles and players ..
+
+    for (FallingTile &fallingTile : fallingTiles) {
+
+        fallingTile.setActive(false);
+
+    }
+
+
+    // Scroll in ..
+
+    this->gameStats.xOffset = 224;
+    this->gameStats.endOfGame = false;
+
+
+    // If last row is all zeroes we can render the board down 6px ..
+
+    uint8_t blankRow = 0;
+
+    for (uint16_t y = Constants::BoardHeight - 1; y > 0; y--) {
+
+        uint8_t count = 0;
+
+        for (uint16_t x = 0; x < Constants::BoardWidth; x++){
+
+            count = count + (board[y][x] == static_cast<uint8_t>(Tiles::None) ? 1 : 0);
+
+        }
+
+        if (count == Constants::BoardWidth) {
+            blankRow++;
+        }
+        else {
+            break;
+        }
+
+    }
+
+    this->gameStats.yOffset = 0 + (blankRow * Constants::CellHeight_PlusBorder / 2);
+    this->gameStats.stars = 0;
+
+}
+
+bool Game::endOfGame() {
+
+    if (this->gameStats.xOffset == 0 && !player.isMoving()) {
+
+        for (int16_t y = 0; y < Constants::BoardHeight; y++) {
+
+            for (int16_t x = 0; x < Constants::BoardWidth; x++) {
+
+                if (x == player.getX() && y == player.getY()) {
+
+                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button2) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_SolidFloor) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_LinkedFloor) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_NormalFloor)) {
+
+                        return false;
+
+                    }
+
+                }
+                else {
+
+                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button1) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_SolidFloor) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_LinkedFloor) ||
+                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_NormalFloor)) {
+
+                        return false;
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
+        // If this is the end of the game, check for exit tiles ..
+
+        for (int16_t y = 0; y < Constants::BoardHeight; y++) {
+
+            for (int16_t x = 0; x < Constants::BoardWidth; x++) {
+
+                if (static_cast<Tiles>(this->board[y][x]) == Tiles::Exit) {
+
+                    this->board[y][x] = static_cast<uint8_t>(Tiles::Button1);
+                    return false;
+
+                }
+
+            }
+
+        }
+
+        return true;
+
+    }
+    else {
+
+        return false;
+    }
+
+}
+
+void Game::printBoard() {
+
+    printf("--------------------------\n");
+
+    for (int16_t y = 0; y < Constants::BoardHeight; y++) {
+
+        for (int16_t x = 0; x < Constants::BoardWidth; x++) {
+
+            if (this->board[y][x] < 10) printf("_");
+            printf("%i ", this->board[y][x]);
+
+        }
+
+        printf("\n");
+
+    }
+
+    printf("\n");
+
+}

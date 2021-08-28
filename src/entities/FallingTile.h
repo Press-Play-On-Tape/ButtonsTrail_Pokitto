@@ -8,9 +8,10 @@ class FallingTile {
 
         uint8_t x;
         uint8_t y;
-        bool active = false;
         uint8_t yOffset = 0;
         uint8_t numberOfImages = 0;
+        bool active = false;
+        bool linked = false;
 
     public:
 
@@ -18,6 +19,7 @@ class FallingTile {
         uint8_t getY()                          { return this->y; }
         uint8_t getYOffset()                    { return this->yOffset; }
         bool isActive()                         { return this->active; }
+        bool isLinked()                         { return this->linked; }
 
         void setX(uint8_t val)                  { this->x = val; }
         void setY(uint8_t val)                  { this->y = val; }
@@ -27,13 +29,14 @@ class FallingTile {
 
     public:
     
-        void init(uint8_t x, uint8_t y, uint8_t numberOfImages) {
-            
+        void init(uint8_t x, uint8_t y, uint8_t numberOfImages, bool isLinked) {
+
             this->x = x;
             this->y = y;
             this->yOffset = 0;
             this->active = true;
             this->numberOfImages = numberOfImages;
+            this->linked = isLinked;
 
         }
 

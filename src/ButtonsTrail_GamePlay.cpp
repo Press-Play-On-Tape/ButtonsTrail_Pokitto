@@ -116,17 +116,148 @@ void Game::game() {
 
     if (this->gameStats.xOffset == 0 && !player.isMoving() && !player.isDying() && !this->gameStats.endOfGame) {
 
-        if (PC::buttons.pressed(BTN_LEFT) && player.getX() > -1)                             { player.moveLeft();   this->gameStats.moves++;   removeTile(); } 
-        else if (PC::buttons.pressed(BTN_RIGHT) && player.getX() < Constants::BoardWidth)    { player.moveRight();  this->gameStats.moves++;   removeTile(); } 
-        else if (PC::buttons.pressed(BTN_UP) && player.getY() > -1)                          { player.moveUp();     this->gameStats.moves++;   removeTile(); } 
-        else if (PC::buttons.pressed(BTN_DOWN) && player.getY() < Constants::BoardHeight)    { player.moveDown();   this->gameStats.moves++;   removeTile(); } 
+        if (PC::buttons.pressed(BTN_LEFT) && player.getX() > -1) {
+
+            if (this->other.isActive() && this->player.getX() - 1 == this->other.getX() && this->player.getY() == this->other.getY()) {
+
+            }
+            else {
+
+                player.moveLeft();   
+                this->gameStats.moves++;   
+
+                removeTile(this->player); 
+
+                if (this->other.isActive() && this->other.getX() > 0) {
+
+                    switch (static_cast<Tiles>(this->board[this->other.getY()][this->other.getX() - 1])) {
+
+                        case Tiles::None:
+                        case Tiles::Exit:
+                        case Tiles::Gem1_Only:
+                            break;
+
+                        default:
+                            this->other.moveLeft();
+                            removeTile(this->other);
+                            break;
+
+                    }
+
+                }
+
+            }
+            
+        }
+
+        else if (PC::buttons.pressed(BTN_RIGHT) && player.getX() < Constants::BoardWidth) {
+
+            if (this->other.isActive() && this->player.getX() + 1 == other.getX() && this->player.getY() == other.getY()) {
+
+            }
+            else {
+
+                player.moveRight();  
+                this->gameStats.moves++;   
+                removeTile(this->player); 
+
+                if (this->other.isActive() && this->other.getX() < Constants::BoardWidth - 1) {
+
+                    switch (static_cast<Tiles>(this->board[this->other.getY()][this->other.getX() + 1])) {
+
+                        case Tiles::None:
+                        case Tiles::Exit:
+                        case Tiles::Gem1_Only:
+                            break;
+
+                        default:
+                            this->other.moveRight();
+                            removeTile(this->other);
+                            break;
+
+                    }
+
+                }
+
+            }
+
+        } 
+
+        else if (PC::buttons.pressed(BTN_UP) && player.getY() > -1) { 
+
+            if (this->other.isActive() && this->player.getX() == this->other.getX() && this->player.getY() - 1 == this->other.getY()) {
+
+            }
+            else {
+
+                player.moveUp();     
+                this->gameStats.moves++;   
+                removeTile(this->player); 
+        
+                if (this->other.isActive() && this->other.getY() > 0) {
+
+                    switch (static_cast<Tiles>(this->board[this->other.getY() - 1][this->other.getX()])) {
+
+                        case Tiles::None:
+                        case Tiles::Exit:
+                        case Tiles::Gem1_Only:
+                            break;
+
+                        default:
+                            this->other.moveUp();
+                            removeTile(this->other);
+                            break;
+
+                    }
+
+                }
+
+            }
+
+        } 
+
+        else if (PC::buttons.pressed(BTN_DOWN) && player.getY() < Constants::BoardHeight) { 
+
+            if (this->other.isActive() && this->player.getX() == this->other.getX() && this->player.getY() + 1 == this->other.getY()) {
+
+            }
+            else {
+
+                player.moveDown();   
+                this->gameStats.moves++;   
+                removeTile(this->player); 
+
+                if (this->other.isActive() && this->other.getY() < Constants::BoardHeight - 1) {
+
+                    switch (static_cast<Tiles>(this->board[this->other.getY() + 1][this->other.getX()])) {
+
+                        case Tiles::None:
+                        case Tiles::Exit:
+                        case Tiles::Gem1_Only:
+                            break;
+
+                        default:
+                            this->other.moveDown();
+                            removeTile(this->other);
+                            break;
+
+                    }
+
+                }     
+
+            }
+
+        }       
 
     }
 
 
     // Is the player on a 'blank' tile?
 
-    if (!player.isDying() && (player.getXNew() < 0 || player.getXNew() == Constants::BoardWidth || player.getYNew() < 0 || player.getYNew() == Constants::BoardHeight || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::None))) {
+    if (!player.isDying() && (player.getXNew() < 0 || player.getXNew() == Constants::BoardWidth || player.getYNew() < 0 || player.getYNew() == Constants::BoardHeight 
+        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::None)
+        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::Exit)
+        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::Gem1_Only))) {
 
         player.kill();
         
@@ -152,6 +283,8 @@ void Game::game() {
 
 
     // Update the game state ..
+
+    this->other.update();
 
     if (this->player.update() && this->gameStats.xOffset == 0) {
     
@@ -239,11 +372,11 @@ void Game::game() {
 
 }
 
-void Game::removeTile() {
+void Game::removeTile(Player &character) {
 
     bool soundPlayed = false;
 
-    switch (static_cast<Tiles>(board[player.getYNew()][player.getXNew()])) {
+    switch (static_cast<Tiles>(board[character.getYNew()][character.getXNew()])) {
 
         case Tiles::Button1:
 
@@ -258,23 +391,92 @@ void Game::removeTile() {
 
     }
 
-    switch (static_cast<Tiles>(board[player.getY()][player.getX()])) {
+    switch (static_cast<Tiles>(board[character.getY()][character.getX()])) {
 
         case Tiles::NormalFloor:
+        case Tiles::Gem_NormalFloor:
 
             #ifdef SOUNDS
             if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_05);
             soundPlayed = true;
             #endif
 
-            board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::None);
+            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
            
             for (FallingTile &fallingTile : fallingTiles) {
 
                 if (!fallingTile.isActive()) {
 
-                    fallingTile.init(player.getX(), player.getY(), 3);
+                    fallingTile.init(character.getX(), character.getY(), 3, false);
                     break;
+
+                }
+
+            }
+
+            break;
+
+        case Tiles::LinkedFloor:
+        case Tiles::Gem_LinkedFloor:
+
+            #ifdef SOUNDS
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_05);
+            soundPlayed = true;
+            #endif
+
+            for (uint16_t y = 0; y < Constants::BoardHeight; y++){
+
+                for (uint16_t x = 0; x < Constants::BoardWidth; x++){
+
+                    Tiles test = static_cast<Tiles>(board[y][x]);
+
+                    switch (test) {
+
+                        case Tiles::LinkedFloor:
+
+                            board[y][x] = static_cast<uint8_t>(Tiles::None);
+                            for (FallingTile &fallingTile : this->fallingTiles) {
+
+                                if (!fallingTile.isActive()) {
+
+                                    fallingTile.init(x, y, 3, true);
+                                    break;
+
+                                }
+
+                            }
+
+                            break;
+
+                        case Tiles::Gem_LinkedFloor:
+
+                            if (x != character.getXOld() || y != character.getYOld()) {
+                                
+                                board[y][x] = static_cast<uint8_t>(Tiles::Gem1_Only);
+
+                            }
+                            else {
+
+                                board[y][x] = static_cast<uint8_t>(Tiles::None);
+
+                            }
+
+                            for (FallingTile &fallingTile : this->fallingTiles) {
+
+                                if (!fallingTile.isActive()) {
+
+                                    fallingTile.init(x, y, 3, true);
+                                    break;
+
+                                }
+
+                            }
+
+                            break;
+
+                        default: break;
+
+                    }
 
                 }
 
@@ -289,7 +491,7 @@ void Game::removeTile() {
             soundPlayed = true;
             #endif
 
-            board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::NormalFloor);
+            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::NormalFloor);
             break;
 
         case Tiles::Button1:
@@ -299,7 +501,17 @@ void Game::removeTile() {
             soundPlayed = true;
             #endif
 
-            board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button2);
+            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button2);
+            break;
+
+        case Tiles::Gem_SolidFloor:
+
+            #ifdef SOUNDS
+            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            soundPlayed = true;
+            #endif
+
+            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::SolidFloor);
             break;
 
         case Tiles::Button2:
@@ -309,7 +521,7 @@ void Game::removeTile() {
             soundPlayed = true;
             #endif
 
-            board[player.getY()][player.getX()] = static_cast<uint8_t>(Tiles::Button1);
+            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button1);
             break;
 
         default: 
@@ -317,133 +529,4 @@ void Game::removeTile() {
 
     }
     
-}
-
-void Game::initGame(uint8_t level) {
-
-    const uint8_t *puzzle = Puzzles::puzzles[level];
-
-    uint16_t idx = 0;
-
-
-    // Retrieve player starting position ..
-
-    int8_t startX = puzzle[idx++];
-    int8_t startY = puzzle[idx++];
-
-    player.init(startX, startY);
-
-
-    // Retrieve arrows (if defined) ..
-
-    startX = puzzle[idx++];
-    startY = puzzle[idx++];
-
-    arrows[0].init(startX, startY);
-
-    startX = puzzle[idx++];
-    startY = puzzle[idx++];
-
-
-    // Minimium number of moves
-
-    this->gameStats.minimumMoves = puzzle[idx++];
-
-    arrows[1].init(startX, startY);
-
-    for (uint16_t y = 0; y < Constants::BoardHeight; y++){
-
-        for (uint16_t x = 0; x < Constants::BoardWidth; x++){
-
-            uint8_t data = puzzle[idx++];
-
-            board[y][x] = data;
-
-        }
-
-    }
-
-
-    // Clear falling tiles and players ..
-
-    for (FallingTile &fallingTile : fallingTiles) {
-
-        fallingTile.setActive(false);
-
-    }
-
-
-    // Scroll in ..
-
-    this->gameStats.xOffset = 224;
-    this->gameStats.endOfGame = false;
-
-
-    // If last row is all zeroes we can render the board down 6px ..
-
-    uint8_t blankRow = 0;
-
-    for (uint16_t y = Constants::BoardHeight - 1; y > 0; y--) {
-
-        uint8_t count = 0;
-
-        for (uint16_t x = 0; x < Constants::BoardWidth; x++){
-
-            count = count + (board[y][x] == static_cast<uint8_t>(Tiles::None) ? 1 : 0);
-
-        }
-
-        if (count == Constants::BoardWidth) {
-            blankRow++;
-        }
-        else {
-            break;
-        }
-
-    }
-
-    this->gameStats.yOffset = 20 + (blankRow * Constants::CellHeight_PlusBorder / 2);
-    this->gameStats.stars = 0;
-
-}
-
-bool Game::endOfGame() {
-
-    if (this->gameStats.xOffset == 0 && !player.isMoving()) {
-
-        for (int16_t y = 0; y < Constants::BoardHeight; y++) {
-
-            for (int16_t x = 0; x < Constants::BoardWidth; x++) {
-
-                if (x == player.getX() && y == player.getY()) {
-
-                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button2)) {
-
-                        return false;
-
-                    }
-
-                }
-                else {
-
-                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button1)) {
-
-                        return false;
-
-                    }
-
-                }
-
-            }
-
-        }
-
-        return true;
-
-    }
-    else {
-
-        return false;
-    }
-
 }

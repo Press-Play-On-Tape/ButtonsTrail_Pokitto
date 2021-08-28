@@ -17,8 +17,8 @@ void Game::renderBoard() {
 
             PD::drawBitmap(Constants::Board_XOffset + (fallingTile.getX() * Constants::CellWidth_PlusBorder), 
                            Constants::Board_YOffset + (fallingTile.getY() * Constants::CellHeight_PlusBorder) + fallingTile.getYOffset() + this->gameStats.yOffset, 
-                           Images::Tile_Falling[fallingTile.getImageIndex()]);
-            
+                           Images::Tile_Falling[fallingTile.getImageIndex() + (fallingTile.isLinked() ? 3 : 0)]);
+
         }
 
     }
@@ -37,9 +37,14 @@ void Game::renderBoard() {
 
                 case Tiles::NormalFloor:
                 case Tiles::DoubleFloor:
-                case Tiles::SolidFloor1:
-                case Tiles::SolidFloor2:
+                case Tiles::SolidFloor:
+                case Tiles::LinkedFloor:
                 case Tiles::Button1:
+                case Tiles::Gem1_Only:
+                case Tiles::Gem_LinkedFloor:
+                case Tiles::Gem_NormalFloor:
+                case Tiles::Gem_SolidFloor:
+                case Tiles::Exit:
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
                                    Images::Tiles[board[y][x]]);
@@ -113,6 +118,19 @@ void Game::renderBoard() {
                            Images::Players[frame]);
 
         }
+        
+    }
+
+
+    // Render other ..
+
+    if (this->gameStats.xOffset == 0 && this->other.isActive()) {
+
+        uint8_t frame = (PC::frameCount % 32) / 16;
+
+        PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset(), 
+                        Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 4, 
+                        Images::Other[frame]);
         
     }
 

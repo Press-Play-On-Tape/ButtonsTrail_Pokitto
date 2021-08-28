@@ -30,7 +30,7 @@ void Game::levelSelect_Init() {
 //
 void Game::levelSelect() { 
 
-    PD::drawBitmap(30, 7, Images::LevelSelect);
+    PD::drawBitmap(38, 7, Images::LevelSelect);
     PD::setColor(2);
 
 
