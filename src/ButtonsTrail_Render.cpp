@@ -47,7 +47,7 @@ void Game::renderBoard() {
                 case Tiles::Exit:
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                   Images::Tiles[board[y][x]]);
+                                   Images::Tiles[static_cast<uint8_t>(board[y][x])]);
                     break;
 
                 case Tiles::Button2:

@@ -29,7 +29,7 @@ class Game {
         FallingTile fallingTiles[Constants::FallingTilesCount];
         Arrow arrows[3];
 
-        uint8_t board[Constants::BoardHeight][Constants::BoardWidth];
+        Tiles board[Constants::BoardHeight][Constants::BoardWidth];
         Particle particles[Constants::ParticlesMax];
 
         GameCookie *cookie;

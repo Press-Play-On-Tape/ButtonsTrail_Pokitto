@@ -290,9 +290,9 @@ void Game::game() {
     // Is the player on a 'blank' tile?
 
     if (!player.isDying() && (player.getXNew() < 0 || player.getXNew() == Constants::BoardWidth || player.getYNew() < 0 || player.getYNew() == Constants::BoardHeight 
-        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::None)
-        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::Exit)
-        || board[player.getYNew()][player.getXNew()] == static_cast<uint8_t>(Tiles::Gem1_Only))) {
+        || this->board[player.getYNew()][player.getXNew()] == Tiles::None
+        || this->board[player.getYNew()][player.getXNew()] == Tiles::Exit
+        || this->board[player.getYNew()][player.getXNew()] == Tiles::Gem1_Only)) {
 
         player.kill();
         
@@ -445,7 +445,7 @@ void Game::removeTile(Player &character) {
 
             if (character.getCharacterType() == Character::Player) {
 
-                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
+                board[character.getY()][character.getX()] = Tiles::None;
 
             }
             else {
@@ -453,11 +453,11 @@ void Game::removeTile(Player &character) {
                 switch (static_cast<Tiles>(board[character.getY()][character.getX()])) {
 
                     case Tiles::Gem_NormalFloor:
-                        board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Gem1_Only);
+                        board[character.getY()][character.getX()] = Tiles::Gem1_Only;
                         break;
 
                     default:
-                        board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
+                        board[character.getY()][character.getX()] = Tiles::None;
                         break;
 
                 } 
@@ -495,7 +495,7 @@ void Game::removeTile(Player &character) {
 
                         case Tiles::LinkedFloor:
 
-                            board[y][x] = static_cast<uint8_t>(Tiles::None);
+                            board[y][x] = Tiles::None;
                             for (FallingTile &fallingTile : this->fallingTiles) {
 
                                 if (!fallingTile.isActive()) {
@@ -513,12 +513,12 @@ void Game::removeTile(Player &character) {
 
                             if (x != character.getXOld() || y != character.getYOld()) {
                                 
-                                board[y][x] = static_cast<uint8_t>(Tiles::Gem1_Only);
+                                board[y][x] = Tiles::Gem1_Only;
 
                             }
                             else {
 
-                                board[y][x] = static_cast<uint8_t>(Tiles::None);
+                                board[y][x] = Tiles::None;
 
                             }
 
@@ -552,7 +552,7 @@ void Game::removeTile(Player &character) {
             soundPlayed = true;
             #endif
 
-            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::NormalFloor);
+            board[character.getY()][character.getX()] = Tiles::NormalFloor;
             break;
 
         case Tiles::Button1:
@@ -564,7 +564,7 @@ void Game::removeTile(Player &character) {
                 soundPlayed = true;
                 #endif
 
-                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button2);
+                board[character.getY()][character.getX()] = Tiles::Button2;
 
             }
             break;
@@ -578,7 +578,7 @@ void Game::removeTile(Player &character) {
                 soundPlayed = true;
                 #endif
 
-                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::SolidFloor);
+                board[character.getY()][character.getX()] = Tiles::SolidFloor;
 
             }
 
@@ -591,7 +591,7 @@ void Game::removeTile(Player &character) {
             soundPlayed = true;
             #endif
 
-            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button1);
+            board[character.getY()][character.getX()] = Tiles::Button1;
             break;
 
         default: 

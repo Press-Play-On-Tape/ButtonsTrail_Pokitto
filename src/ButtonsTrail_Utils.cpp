@@ -147,7 +147,7 @@ void Game::initGame(uint8_t level) {
 
             uint8_t data = puzzle[idx++];
 
-            this->board[y][x] = data;
+            this->board[y][x] = static_cast<Tiles>(data);
 
         }
 
@@ -179,7 +179,7 @@ void Game::initGame(uint8_t level) {
 
         for (uint16_t x = 0; x < Constants::BoardWidth; x++){
 
-            count = count + (board[y][x] == static_cast<uint8_t>(Tiles::None) ? 1 : 0);
+            count = count + (board[y][x] == Tiles::None ? 1 : 0);
 
         }
 
@@ -207,7 +207,7 @@ bool Game::endOfGame() {
 
                 if (x == player.getX() && y == player.getY()) {
 
-                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button2)) {
+                    if (board[y][x] == Tiles::Button2) {
 
                         return false;
 
@@ -216,10 +216,10 @@ bool Game::endOfGame() {
                 }
                 else {
 
-                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button1) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_SolidFloor) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_LinkedFloor) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_NormalFloor)) {
+                    if (board[y][x] == Tiles::Button1 ||
+                        board[y][x] == Tiles::Gem_SolidFloor ||
+                        board[y][x] == Tiles::Gem_LinkedFloor ||
+                        board[y][x] == Tiles::Gem_NormalFloor) {
 
                         return false;
 
@@ -240,7 +240,7 @@ bool Game::endOfGame() {
 
                 if (static_cast<Tiles>(this->board[y][x]) == Tiles::Exit) {
 
-                    this->board[y][x] = static_cast<uint8_t>(Tiles::Button1);
+                    this->board[y][x] = Tiles::Button1;
                     return false;
 
                 }
@@ -267,8 +267,8 @@ void Game::printBoard() {
 
         for (int16_t x = 0; x < Constants::BoardWidth; x++) {
 
-            if (this->board[y][x] < 10) printf("_");
-            printf("%i ", this->board[y][x]);
+            if (static_cast<uint8_t>(this->board[y][x]) < 10) printf("_");
+            printf("%i ", static_cast<uint8_t>(this->board[y][x]));
 
         }
 
