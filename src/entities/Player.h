@@ -60,7 +60,7 @@ class Player {
 
         bool isActive() { 
 
-            return this->x != 255;
+            return this->x >= 0;
         
         }
 

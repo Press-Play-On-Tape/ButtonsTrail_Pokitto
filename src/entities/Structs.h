@@ -23,7 +23,7 @@ struct GameStats {
         GameStats() { };
 
         TitleScreenMode titleSel = TitleScreenMode::NewGame;
-        GameMode mode= GameMode::ButtonsTrail;
+        GameMode mode= GameMode::NoOther;
         
         uint8_t level = 0;
         uint8_t maxLevel = 0;

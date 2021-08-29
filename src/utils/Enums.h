@@ -61,8 +61,9 @@ enum class Direction : uint8_t {
 };
 
 enum class GameMode : uint8_t {
-    ButtonsTrail,
-    Valdi,
+    NoOther,
+    LockStep,
+    Attack
 };
 
 enum class SoundEffect : uint8_t {
