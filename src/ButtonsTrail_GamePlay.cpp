@@ -125,22 +125,30 @@ void Game::game() {
 
                 player.moveLeft();   
                 this->gameStats.moves++;   
-
                 removeTile(this->player); 
 
-                if (this->other.isActive() && this->other.getX() > 0) {
+                if (this->other.isActive()) {  
 
-                    switch (static_cast<Tiles>(this->board[this->other.getY()][this->other.getX() - 1])) {
+                    switch (this->gameStats.mode) {
 
-                        case Tiles::None:
-                        case Tiles::Exit:
-                        case Tiles::Gem1_Only:
+                        case GameMode::LockStep:
+
+                            if (this->canMoveToTile(this->other.getX() - 1, this->other.getY())) {
+
+                                this->other.moveLeft();
+                                removeTile(this->other);
+                                break;
+
+                            }
+
                             break;
 
-                        default:
-                            this->other.moveLeft();
-                            removeTile(this->other);
+                        case GameMode::Attack:
+
+                            this->moveOther();
                             break;
+
+                        default: break;
 
                     }
 
@@ -161,19 +169,28 @@ void Game::game() {
                 this->gameStats.moves++;   
                 removeTile(this->player); 
 
-                if (this->other.isActive() && this->other.getX() < Constants::BoardWidth - 1) {
+                if (this->other.isActive()) {  
 
-                    switch (static_cast<Tiles>(this->board[this->other.getY()][this->other.getX() + 1])) {
+                    switch (this->gameStats.mode) {
 
-                        case Tiles::None:
-                        case Tiles::Exit:
-                        case Tiles::Gem1_Only:
+                        case GameMode::LockStep:
+
+                            if (this->canMoveToTile(this->other.getX() + 1, this->other.getY())) {
+
+                                this->other.moveLeft();
+                                removeTile(this->other);
+                                break;
+
+                            }
+
                             break;
 
-                        default:
-                            this->other.moveRight();
-                            removeTile(this->other);
+                        case GameMode::Attack:
+
+                            this->moveOther();
                             break;
+
+                        default: break;
 
                     }
 
@@ -193,20 +210,29 @@ void Game::game() {
                 player.moveUp();     
                 this->gameStats.moves++;   
                 removeTile(this->player); 
-        
-                if (this->other.isActive() && this->other.getY() > 0) {
 
-                    switch (static_cast<Tiles>(this->board[this->other.getY() - 1][this->other.getX()])) {
+                if (this->other.isActive()) {  
 
-                        case Tiles::None:
-                        case Tiles::Exit:
-                        case Tiles::Gem1_Only:
+                    switch (this->gameStats.mode) {
+
+                        case GameMode::LockStep:
+
+                            if (this->canMoveToTile(this->other.getX(), this->other.getY() - 1)) {
+
+                                this->other.moveLeft();
+                                removeTile(this->other);
+                                break;
+
+                            }
+
                             break;
 
-                        default:
-                            this->other.moveUp();
-                            removeTile(this->other);
+                        case GameMode::Attack:
+
+                            this->moveOther();
                             break;
+
+                        default: break;
 
                     }
 
@@ -227,23 +253,32 @@ void Game::game() {
                 this->gameStats.moves++;   
                 removeTile(this->player); 
 
-                if (this->other.isActive() && this->other.getY() < Constants::BoardHeight - 1) {
+                if (this->other.isActive()) {  
 
-                    switch (static_cast<Tiles>(this->board[this->other.getY() + 1][this->other.getX()])) {
+                    switch (this->gameStats.mode) {
 
-                        case Tiles::None:
-                        case Tiles::Exit:
-                        case Tiles::Gem1_Only:
+                        case GameMode::LockStep:
+
+                            if (this->canMoveToTile(this->other.getX(), this->other.getY() + 1)) {
+
+                                this->other.moveLeft();
+                                removeTile(this->other);
+                                break;
+
+                            }
+
                             break;
 
-                        default:
-                            this->other.moveDown();
-                            removeTile(this->other);
+                        case GameMode::Attack:
+
+                            this->moveOther();
                             break;
+
+                        default: break;
 
                     }
 
-                }     
+                }
 
             }
 
@@ -376,18 +411,25 @@ void Game::removeTile(Player &character) {
 
     bool soundPlayed = false;
 
-    switch (static_cast<Tiles>(board[character.getYNew()][character.getXNew()])) {
+    if (character.getCharacterType() == Character::Player) {
 
-        case Tiles::Button1:
+        switch (static_cast<Tiles>(board[character.getYNew()][character.getXNew()])) {
 
-            #ifdef SOUNDS
-            this->playSoundEffect(SoundEffect::Tone_03);
-            soundPlayed = true;
-            #endif
+            case Tiles::Button1:
+            case Tiles::Gem_NormalFloor:
+            case Tiles::Gem_SolidFloor:
+            case Tiles::Gem_LinkedFloor:
 
-            break;
+                #ifdef SOUNDS
+                this->playSoundEffect(SoundEffect::Tone_03);
+                soundPlayed = true;
+                #endif
 
-        default: break;
+                break;
+
+            default: break;
+
+        }
 
     }
 
@@ -397,11 +439,30 @@ void Game::removeTile(Player &character) {
         case Tiles::Gem_NormalFloor:
 
             #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_05);
+            if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_05);
             soundPlayed = true;
             #endif
 
-            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
+            if (character.getCharacterType() == Character::Player) {
+
+                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
+
+            }
+            else {
+                
+                switch (static_cast<Tiles>(board[character.getY()][character.getX()])) {
+
+                    case Tiles::Gem_NormalFloor:
+                        board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Gem1_Only);
+                        break;
+
+                    default:
+                        board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::None);
+                        break;
+
+                } 
+
+            }
            
             for (FallingTile &fallingTile : fallingTiles) {
 
@@ -420,7 +481,7 @@ void Game::removeTile(Player &character) {
         case Tiles::Gem_LinkedFloor:
 
             #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_05);
+            if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_05);
             soundPlayed = true;
             #endif
 
@@ -487,7 +548,7 @@ void Game::removeTile(Player &character) {
         case Tiles::DoubleFloor:
 
             #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
             soundPlayed = true;
             #endif
 
@@ -496,28 +557,37 @@ void Game::removeTile(Player &character) {
 
         case Tiles::Button1:
 
-            #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
-            soundPlayed = true;
-            #endif
+            if (character.getCharacterType() == Character::Player) {
 
-            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button2);
+                #ifdef SOUNDS
+                if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
+                soundPlayed = true;
+                #endif
+
+                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::Button2);
+
+            }
             break;
 
         case Tiles::Gem_SolidFloor:
 
-            #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
-            soundPlayed = true;
-            #endif
+            if (character.getCharacterType() == Character::Player) {
 
-            board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::SolidFloor);
+                #ifdef SOUNDS
+                if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+                soundPlayed = true;
+                #endif
+
+                board[character.getY()][character.getX()] = static_cast<uint8_t>(Tiles::SolidFloor);
+
+            }
+
             break;
 
         case Tiles::Button2:
 
             #ifdef SOUNDS
-            if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
+            if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
             soundPlayed = true;
             #endif
 

@@ -13,7 +13,7 @@ namespace Constants {
 
     constexpr uint8_t CellWidth_PlusBorder = 14;
     constexpr uint8_t CellHeight_PlusBorder = 14;
-    constexpr uint8_t Board_XOffset = 4;
+    constexpr uint8_t Board_XOffset = 6;
     constexpr uint8_t Board_YOffset = 28;
 
     // Zoom
@@ -64,6 +64,11 @@ enum class GameMode : uint8_t {
     NoOther,
     LockStep,
     Attack
+};
+
+enum class Character : uint8_t {
+    Player,
+    Other,
 };
 
 enum class SoundEffect : uint8_t {

@@ -1,12 +1,14 @@
 #pragma once
 
 #include "../utils/Utils.h"
+#include "../utils/Enums.h"
 
 
 class Player { 
 
     private:
 
+        Character character = Character::Player;
         int8_t x;
         int8_t xNew;
         int8_t xOld;
@@ -38,7 +40,9 @@ class Player {
 
         uint8_t getYDyingOffset_1()     { return this->yDyingOffset_1; }
         uint8_t getYDyingOffset_2()     { return this->yDyingOffset_2; }
-        
+
+        Character getCharacterType()    { return this->character; }
+
         bool isDying()                  { return this->dying; }
         bool isMoving()                 { return this->moving; }
 
@@ -70,8 +74,9 @@ class Player {
 
         }
 
-        void init(int8_t x, int8_t y) {
+        void init(Character character, int8_t x, int8_t y) {
             
+            this->character = character;
             this->x = x;
             this->xOld = x;
             this->xNew = x;

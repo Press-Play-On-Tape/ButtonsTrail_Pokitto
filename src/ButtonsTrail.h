@@ -65,6 +65,8 @@ class Game {
         void muteTheme();
         void playSoundEffect(SoundEffect soundEffect);
         void printBoard();
+        void moveOther();
+        bool canMoveToTile(uint8_t x, uint8_t y);
 
 };
 

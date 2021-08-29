@@ -113,7 +113,7 @@ void Game::initGame(uint8_t level) {
     int8_t startX = puzzle[idx++];
     int8_t startY = puzzle[idx++];
 
-    this->player.init(startX, startY);
+    this->player.init(Character::Player, startX, startY);
 
 
     // Retrieve other player starting position ..
@@ -121,7 +121,7 @@ void Game::initGame(uint8_t level) {
     startX = puzzle[idx++];
     startY = puzzle[idx++];
 
-    this->other.init(startX, startY);
+    this->other.init(Character::Other, startX, startY);
 
 
     // Retrieve arrows (if defined) ..
@@ -207,10 +207,7 @@ bool Game::endOfGame() {
 
                 if (x == player.getX() && y == player.getY()) {
 
-                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button2) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_SolidFloor) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_LinkedFloor) ||
-                        board[y][x] == static_cast<uint8_t>(Tiles::Gem_NormalFloor)) {
+                    if (board[y][x] == static_cast<uint8_t>(Tiles::Button2)) {
 
                         return false;
 
@@ -280,5 +277,75 @@ void Game::printBoard() {
     }
 
     printf("\n");
+
+}
+
+void Game::moveOther() {
+
+    if (this->player.getXNew() < this->other.getX()) {
+
+        if (this->canMoveToTile(this->other.getX() - 1, this->other.getY())) {
+
+            this->other.moveLeft();
+            removeTile(this->other);
+            return;
+
+        }
+
+    }
+
+    if (this->player.getXNew() > this->other.getX()) {
+
+        if (this->canMoveToTile(this->other.getX() + 1, this->other.getY())) {
+
+            this->other.moveRight();
+            removeTile(this->other);
+            return;
+
+        }
+
+    }
+
+    if (this->player.getYNew() < this->other.getY()) {
+
+        if (this->canMoveToTile(this->other.getX(), this->other.getY() - 1)) {
+
+            this->other.moveUp();
+            removeTile(this->other);
+            return;
+
+        }
+
+    }
+
+    if (this->player.getYNew() > this->other.getY()) {
+
+        if (this->canMoveToTile(this->other.getX(), this->other.getY() + 1)) {
+
+            this->other.moveDown();
+            removeTile(this->other);
+            return;
+
+        }
+
+    }
+
+}
+
+bool Game::canMoveToTile(uint8_t x, uint8_t y) {
+
+    if (this->player.getXNew() == x && this->player.getYNew() == y) return false;
+
+    switch (static_cast<Tiles>(this->board[y][x])) {
+
+        case Tiles::None:
+        case Tiles::Exit:
+        case Tiles::Gem1_Only:
+            return false;
+
+        default:
+            return true;
+
+    }
 
 }

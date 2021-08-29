@@ -12,7 +12,7 @@ namespace Puzzles {
 
     const uint8_t* const puzzles[] = { 
 
-Puzzle_3_00,
+Puzzle_3_00,Puzzle_3_01,Puzzle_3_02,Puzzle_3_03,Puzzle_3_04,Puzzle_3_05, Puzzle_3_06,Puzzle_3_07,
 
 Puzzle_2_00, Puzzle_2_01, Puzzle_2_02, Puzzle_2_03, Puzzle_2_04,  
 Puzzle_2_05, Puzzle_2_06, Puzzle_2_07, Puzzle_2_08, Puzzle_2_09,
