@@ -141,38 +141,38 @@ void Game::title() {
 
     // Render page ..
 
-    PD::drawBitmap(14, 38, Images::Title);
-    PD::drawBitmap(49, 113, Images::Title_New);
+    PD::drawBitmap(14, 33, Images::Title);
+    PD::drawBitmap(49, 108, Images::Title_New);
 
     if (PC::frameCount % 128 < 2) {
 
-        PD::drawBitmap(93, 77, Images::Eyes);
+        PD::drawBitmap(93, 72, Images::Eyes);
 
     }
 
 
     if (this->gameStats.maxLevel > 0) {
      
-        PD::drawBitmap(129, 113, Images::Title_Continue);
+        PD::drawBitmap(129, 108, Images::Title_Continue);
 
     }
 
     switch (this->cookie->sfx) {
 
         case SoundEffects::Music:
-            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_Music_White: Images::Sound_Music_Grey);
+            PD::drawBitmap(96, 125, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_Music_White: Images::Sound_Music_Grey);
             break;
 
         case SoundEffects::SFX:
-            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_SFX_White: Images::Sound_SFX_Grey);
+            PD::drawBitmap(96, 125, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_SFX_White: Images::Sound_SFX_Grey);
             break;
 
         case SoundEffects::Both:
-            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects? Images::Sound_Both_White: Images::Sound_Both_Grey);
+            PD::drawBitmap(96, 125, this->gameStats.titleSel == TitleScreenMode::SoundEffects? Images::Sound_Both_White: Images::Sound_Both_Grey);
             break;
 
         default:
-            PD::drawBitmap(188, 160, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_None_White: Images::Sound_None_Grey);
+            PD::drawBitmap(96, 125, this->gameStats.titleSel == TitleScreenMode::SoundEffects ? Images::Sound_None_White: Images::Sound_None_Grey);
             break;
 
     }
@@ -182,13 +182,26 @@ void Game::title() {
     switch (this->gameStats.titleSel) {
 
         case TitleScreenMode::NewGame:
-            PD::drawBitmap(36, 113, Images::Skulls_Title[frame]);
+            PD::drawBitmap(36, 108, Images::Skulls_Title[frame]);
             break;
 
         case TitleScreenMode::LevelSelect:
-            PD::drawBitmap(116, 113, Images::Skulls_Title[frame]);
+            PD::drawBitmap(116, 108, Images::Skulls_Title[frame]);
             break;
             
+    }
+
+    // PD::drawBitmap(0, 131, Images::Fire[(PC::frameCount % 60) / 5]);
+    // PD::drawBitmap(184, 131, Images::Fire[((PC::frameCount + 6) % 60) / 5]);
+
+    int8_t spacing[] = { 0, 1, 0, -1, -2, 0, 1, 2, 1, 3, 0, 1, -2, 1 };
+
+    for (int16_t x = -18, i = 0; x < 220;) {
+
+        PD::drawBitmap(x, 142, Images::Fire[((PC::frameCount + (spacing[i] * 6)) % 60) / 5]);
+        x = x + 23 + spacing[i];
+        i++;
+
     }
 
 }

@@ -10,3 +10,4 @@
 #include "LevelSelect.h"
 #include "Numbers.h"
 #include "Controls.h"
+#include "Fire.h"
