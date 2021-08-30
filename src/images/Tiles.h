@@ -10,14 +10,7 @@ namespace Images {
     #include "Tiles/Tile_06_00.h"
     #include "Tiles/Tile_06_01.h"
     #include "Tiles/Tile_06_02.h"
-    #include "Tiles/Tile_07.h"
-    #include "Tiles/Tile_08.h"
-    #include "Tiles/Tile_09.h"
-    #include "Tiles/Tile_10_00.h"
-    #include "Tiles/Tile_10_01.h"
-    #include "Tiles/Tile_10_02.h"
     #include "Tiles/Tile_11.h"
-    #include "Tiles/Tile_12.h"
 
     const uint8_t * const Tiles[] = { 
         Tile_01, // Never used
@@ -27,12 +20,12 @@ namespace Images {
         Tile_04,
         Tile_05, 
         Tile_06_00,
-        Tile_07, 
-        Tile_08,
-        Tile_09, 
-        Tile_10_00, 
-        Tile_11, 
-        Tile_12, 
+        Tile_03,  // 07 Gem Linked Floor 
+        Tile_01,  // 08 Gem Normal Floor
+        Tile_01,  // 09 Gem Only
+        Tile_11,  // 10 Gem Only2
+        Tile_11,  // Exit
+        Tile_02,  // 12 Solid with Gem 
     };
    
     const uint8_t * const Tile_06[] = { 
@@ -41,12 +34,6 @@ namespace Images {
         Tile_06_02,
     };
    
-    const uint8_t * const Tile_10[] = { 
-        Tile_10_00, 
-        Tile_10_01,
-        Tile_10_02,
-    };
-
     #include "Tiles/Tile_Falling_00.h"
     #include "Tiles/Tile_Falling_01.h"
     #include "Tiles/Tile_Falling_02.h"
@@ -62,5 +49,17 @@ namespace Images {
         Tile_Falling_04,
         Tile_Falling_05,
     };   
+
+    #include "Tiles/Gem_00.h"
+    #include "Tiles/Gem_01.h"
+    #include "Tiles/Gem_02.h"
+    #include "Tiles/Gem_03.h"
+
+    const uint8_t * const Gems[] = { 
+        Gem_00,
+        Gem_01,
+        Gem_02,
+        Gem_03,
+    };
 
 }

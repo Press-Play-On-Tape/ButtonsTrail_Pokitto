@@ -40,15 +40,38 @@ void Game::renderBoard() {
                 case Tiles::SolidFloor:
                 case Tiles::LinkedFloor:
                 case Tiles::Button1:
-                case Tiles::Gem1_Only:
-                case Tiles::Gem_LinkedFloor:
-                case Tiles::Gem_NormalFloor:
-                case Tiles::Gem_SolidFloor:
                 case Tiles::Exit:
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
                                    Images::Tiles[static_cast<uint8_t>(board[y][x])]);
                     break;
+
+                case Tiles::Gem_LinkedFloor:
+                case Tiles::Gem_NormalFloor:
+                case Tiles::Gem_SolidFloor:
+                    {
+                        uint8_t frame = (PC::frameCount % 64) / 16;
+
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
+                                    Images::Tiles[static_cast<uint8_t>(board[y][x])]);
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset - 4, 
+                                    Images::Gems[frame]);
+
+                    }
+                    break;
+
+                case Tiles::Gem1_Only:
+                    {
+                        uint8_t frame = (PC::frameCount % 64) / 16;
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset - 4, 
+                                    Images::Gems[frame]);
+
+                    }
+                    break;
+
 
                 case Tiles::Button2:
                     {
