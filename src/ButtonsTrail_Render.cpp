@@ -116,6 +116,8 @@ void Game::renderBoard() {
 
         uint8_t frame = (PC::frameCount % 32) / 16;
 
+        if (this->player.getDirection() == Direction::Left) frame = frame + 2;
+
         if (player.isDying()) {
 
             if (player.isMoving()) {
@@ -151,7 +153,8 @@ void Game::renderBoard() {
 
         uint8_t frame = (PC::frameCount % 32) / 16;
 
-        if (this->gameStats.mode == GameMode::Attack) frame = frame + 2;
+        if (this->other.getDirection() == Direction::Left) frame = frame + 2;
+        if (this->gameStats.mode == GameMode::Attack) frame = frame + 4;
 
         PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset(), 
                         Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 4, 

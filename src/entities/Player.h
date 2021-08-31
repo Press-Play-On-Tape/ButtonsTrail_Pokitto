@@ -9,6 +9,8 @@ class Player {
     private:
 
         Character character = Character::Player;
+        Direction direction = Direction::Right;
+
         int8_t x;
         int8_t xNew;
         int8_t xOld;
@@ -28,36 +30,38 @@ class Player {
 
     public:
 
-        int8_t getX()                   { return this->x; }
-        int8_t getXNew()                { return this->xNew; }
-        int8_t getXOld()                { return this->xOld; }
-        int8_t getXOffset()             { return this->xOffset; }
+        int8_t getX()                           { return this->x; }
+        int8_t getXNew()                        { return this->xNew; }
+        int8_t getXOld()                        { return this->xOld; }
+        int8_t getXOffset()                     { return this->xOffset; }
 
-        int8_t getY()                   { return this->y; }
-        int8_t getYNew()                { return this->yNew; }
-        int8_t getYOld()                { return this->yOld; }
-        int8_t getYOffset()             { return this->yOffset; }
+        int8_t getY()                           { return this->y; }
+        int8_t getYNew()                        { return this->yNew; }
+        int8_t getYOld()                        { return this->yOld; }
+        int8_t getYOffset()                     { return this->yOffset; }
 
-        uint8_t getYDyingOffset_1()     { return this->yDyingOffset_1; }
-        uint8_t getYDyingOffset_2()     { return this->yDyingOffset_2; }
+        uint8_t getYDyingOffset_1()             { return this->yDyingOffset_1; }
+        uint8_t getYDyingOffset_2()             { return this->yDyingOffset_2; }
 
-        Character getCharacterType()    { return this->character; }
+        Character getCharacterType()            { return this->character; }
+        Direction getDirection()                { return this->direction; }
 
-        bool isDying()                  { return this->dying; }
-        bool isMoving()                 { return this->moving; }
+        bool isDying()                          { return this->dying; }
+        bool isMoving()                         { return this->moving; }
 
-        void setX(int8_t val)           { this->x = val; }
-        void setXNew(int8_t val)        { this->xNew = val; }
-        void setXOld(int8_t val)        { this->xOld = val; }
-        void setXOffset(int8_t val)     { this->xOffset = val; }
+        void setX(int8_t val)                   { this->x = val; }
+        void setXNew(int8_t val)                { this->xNew = val; }
+        void setXOld(int8_t val)                { this->xOld = val; }
+        void setXOffset(int8_t val)             { this->xOffset = val; }
 
-        void setY(int8_t val)           { this->y = val; }
-        void setYNew(int8_t val)        { this->yNew = val; }
-        void setYOld(int8_t val)        { this->yOld = val; }
-        void setYOffset(int8_t val)     { this->yOffset = val; }
+        void setY(int8_t val)                   { this->y = val; }
+        void setYNew(int8_t val)                { this->yNew = val; }
+        void setYOld(int8_t val)                { this->yOld = val; }
+        void setYOffset(int8_t val)             { this->yOffset = val; }
 
-        void setDying(bool val)         { this->dying = val;}
-        void setMoving(bool val)        { this->moving = val;}
+        void setDying(bool val)                 { this->dying = val;}
+        void setMoving(bool val)                { this->moving = val;}
+        void setDirection(Direction val)        { this->direction = val;}
 
 
     public:
@@ -99,6 +103,7 @@ class Player {
             this->xOld = this->x;
             this->yOld = this->y;
             this->moving = true;
+            this->direction = Direction::Left;
 
         }
 
@@ -108,6 +113,7 @@ class Player {
             this->xOld = this->x;
             this->yOld = this->y;
             this->moving = true;
+            this->direction = Direction::Right;
 
         }
 

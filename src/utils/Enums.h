@@ -57,6 +57,8 @@ enum class Tiles : uint8_t {
 enum class Direction : uint8_t {
     Up,
     Down,
+    Left,
+    Right
 };
 
 enum class GameMode : uint8_t {

@@ -416,8 +416,34 @@ void Game::removeTile(Player &character) {
         switch (static_cast<Tiles>(board[character.getYNew()][character.getXNew()])) {
 
             case Tiles::Button1:
+
+                #ifdef SOUNDS
+                this->playSoundEffect(SoundEffect::Tone_03);
+                soundPlayed = true;
+                #endif
+
+                break;
+
             case Tiles::Gem_NormalFloor:
+
+                #ifdef SOUNDS
+                this->playSoundEffect(SoundEffect::Tone_03);
+                soundPlayed = true;
+                #endif
+
+                board[character.getYNew()][character.getXNew()] = Tiles::NormalFloor;
+                break;
+
             case Tiles::Gem_SolidFloor:
+
+                #ifdef SOUNDS
+                this->playSoundEffect(SoundEffect::Tone_03);
+                soundPlayed = true;
+                #endif
+
+                board[character.getYNew()][character.getXNew()] = Tiles::SolidFloor;
+                break;
+
             case Tiles::Gem_LinkedFloor:
 
                 #ifdef SOUNDS
@@ -425,6 +451,7 @@ void Game::removeTile(Player &character) {
                 soundPlayed = true;
                 #endif
 
+                board[character.getYNew()][character.getXNew()] = Tiles::LinkedFloor;
                 break;
 
             default: break;
