@@ -49,10 +49,9 @@ enum class Tiles : uint8_t {
     Button2,        // 6
     Gem_LinkedFloor,  // 7
     Gem_NormalFloor,  // 8
-    Gem1_Only,  // 9
-    Gem2_Only,  // 10
-    Exit, // 11
-    Gem_SolidFloor,  // 12
+    Gem_SolidFloor,  // 9
+    Exit, // 10
+    Gem1_Only,  // 11
 };
 
 enum class Direction : uint8_t {

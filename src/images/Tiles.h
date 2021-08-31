@@ -22,10 +22,9 @@ namespace Images {
         Tile_06_00,
         Tile_03,  // 07 Gem Linked Floor 
         Tile_01,  // 08 Gem Normal Floor
-        Tile_01,  // 09 Gem Only
-        Tile_11,  // 10 Gem Only2
-        Tile_11,  // Exit
-        Tile_02,  // 12 Solid with Gem 
+        Tile_02,  // 09 Gem Solid Floor 
+        Tile_11,  // 11 Exit
+        Tile_01,  // 10 Gem Only
     };
    
     const uint8_t * const Tile_06[] = { 
