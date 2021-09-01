@@ -332,8 +332,9 @@ void Game::moveOther() {
 
 }
 
-bool Game::canMoveToTile(uint8_t x, uint8_t y) {
+bool Game::canMoveToTile(int8_t x, int8_t y) {
 
+    if (x < 0 || x > Constants::BoardWidth - 1 || y < 0 || y > Constants::BoardHeight - 1) return false;
     if (this->player.getXNew() == x && this->player.getYNew() == y) return false;
 
     switch (static_cast<Tiles>(this->board[y][x])) {

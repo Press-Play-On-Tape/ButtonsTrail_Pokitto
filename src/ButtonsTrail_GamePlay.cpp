@@ -177,7 +177,7 @@ void Game::game() {
 
                             if (this->canMoveToTile(this->other.getX() + 1, this->other.getY())) {
 
-                                this->other.moveLeft();
+                                this->other.moveRight();
                                 removeTile(this->other);
                                 break;
 
@@ -219,7 +219,7 @@ void Game::game() {
 
                             if (this->canMoveToTile(this->other.getX(), this->other.getY() - 1)) {
 
-                                this->other.moveLeft();
+                                this->other.moveUp();
                                 removeTile(this->other);
                                 break;
 
@@ -261,7 +261,7 @@ void Game::game() {
 
                             if (this->canMoveToTile(this->other.getX(), this->other.getY() + 1)) {
 
-                                this->other.moveLeft();
+                                this->other.moveDown();
                                 removeTile(this->other);
                                 break;
 
