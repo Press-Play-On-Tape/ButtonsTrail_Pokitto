@@ -33,7 +33,6 @@ struct GameStats {
         uint16_t moves = 0;
         uint8_t minimumMoves = 0;
         uint8_t instruction = 0;
-        uint8_t start = 0;
         uint8_t exit = 0;
 
         bool endOfGame = false;
