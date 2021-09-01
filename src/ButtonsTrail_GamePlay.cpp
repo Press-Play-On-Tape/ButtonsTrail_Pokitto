@@ -77,6 +77,10 @@ void Game::game() {
             this->gameStats.xOffset = this->gameStats.xOffset - 4;
             break;
 
+        case 0:
+            if (this->gameStats.puffOfSmoke > 0) this->gameStats.puffOfSmoke--;
+            break;
+
         case 1 ... 223:
             this->gameStats.xOffset = this->gameStats.xOffset - 4;
             break;

@@ -147,9 +147,20 @@ void Game::renderBoard() {
     }
 
 
+    // Render puff of smoke ..
+
+    if (this->gameStats.xOffset == 0 && this->other.isActive() && this->gameStats.puffOfSmoke > 0) {
+
+        PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset() - 15, 
+                        Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 17, 
+                        Images::Explosion[this->gameStats.puffOfSmoke / 6]);
+        
+    }
+
+
     // Render other ..
 
-    if (this->gameStats.xOffset == 0 && this->other.isActive()) {
+    if (this->gameStats.xOffset == 0 && this->other.isActive() && this->gameStats.puffOfSmoke < 24) {
 
         uint8_t frame = (PC::frameCount % 32) / 16;
 

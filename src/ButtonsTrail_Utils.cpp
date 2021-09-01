@@ -123,6 +123,11 @@ void Game::initGame(uint8_t level) {
 
     this->other.init(Character::Other, startX, startY);
 
+    if (this->other.isActive()) {
+        this->gameStats.puffOfSmoke = 41;
+    }
+
+
 
     // Retrieve arrows (if defined) ..
 

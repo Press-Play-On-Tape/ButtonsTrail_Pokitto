@@ -39,6 +39,7 @@ struct GameStats {
         bool endOfGame = false;
         uint8_t endOfGameCount = 0;
         uint8_t stars = 0;
+        uint8_t puffOfSmoke = 0;
 
         void reset() {
         }
