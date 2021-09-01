@@ -23,7 +23,8 @@ int main(){
     PD::setColor(5);
     PD::setInvisibleColor(14);
     PC::setFrameRate(60);
-    PD::setFont(fontRunes);
+//    PD::setFont(fontRunes);
+    PD::setFont(font5x7);
     PD::textWrap = false;
 
 
