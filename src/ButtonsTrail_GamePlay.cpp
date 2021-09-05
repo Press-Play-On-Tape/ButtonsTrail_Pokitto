@@ -40,10 +40,6 @@ void Game::game() {
         else if (this->gameStats.moves < this->gameStats.minimumMoves * 3)      { this->gameStats.stars = 1; }
         else                                                                    { this->gameStats.stars = 0; }
 
-        #ifdef SOUNDS
-        this->playSoundEffect(SoundEffect::Tone_04);
-        #endif
-
     }
     else {
 
@@ -97,9 +93,9 @@ void Game::game() {
 
 
 
-    // if (PC::buttons.pressed(BTN_B)) this->gameStats.moves = 0;// SJH remove
-    // if ((PC::buttons.pressed(BTN_B) || PC::buttons.repeat(BTN_B, 1)) && PC::buttons.pressed(BTN_UP)) { this->gameStats.level--; initGame(this->gameStats.level); }// SJH remove
-    // if ((PC::buttons.pressed(BTN_B) || PC::buttons.repeat(BTN_B, 1)) && PC::buttons.pressed(BTN_DOWN)) { this->gameStats.level++; initGame(this->gameStats.level); }// SJH remove
+    if (PC::buttons.pressed(BTN_C)) this->gameStats.moves = 0;// SJH remove
+    if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_UP) && this->gameStats.level > 0) { this->gameStats.level--; initGame(this->gameStats.level); }// SJH remove
+    if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_DOWN) && this->gameStats.level < Puzzles::Count) { this->gameStats.level++; initGame(this->gameStats.level); }// SJH remove
     
     if (PC::buttons.pressed(BTN_B) || PC::buttons.repeat(BTN_B, 1)) { // Exit
 
@@ -109,6 +105,7 @@ void Game::game() {
 
             this->gameState = GameState::Title_Init;
             this->gameStats.exit = 0;
+            this->cookie->saveCookie();
 
         }
     }
@@ -296,7 +293,7 @@ void Game::game() {
     if (!player.isDying() && (player.getXNew() < 0 || player.getXNew() == Constants::BoardWidth || player.getYNew() < 0 || player.getYNew() == Constants::BoardHeight 
         || this->board[player.getYNew()][player.getXNew()] == Tiles::None
         || this->board[player.getYNew()][player.getXNew()] == Tiles::Exit
-        || this->board[player.getYNew()][player.getXNew()] == Tiles::Gem1_Only)) {
+        || this->board[player.getYNew()][player.getXNew()] == Tiles::Gem_Only)) {
 
         player.kill();
         
@@ -371,29 +368,40 @@ void Game::game() {
             }
 
             this->cookie->levelRating[this->gameStats.level] = this->gameStats.stars;
-            this->cookie->saveCookie();
+//printf("this->cookie->saveCookie() 1\n");
+            // this->cookie->saveCookie();
+
+        }
+        else if (gameStats.endOfGameCount == 10) {
+
+            #ifdef SOUNDS
+//printf("tone04\n");
+            this->playSoundEffect(SoundEffect::Tone_04);
+            #endif
 
         }
 
-        if (this->gameStats.level + 1 == Puzzles::Count) {
+        // if (this->gameStats.level + 1 == Puzzles::Count) {
 
-            PD::drawBitmap(75, 66, Images::EndOfGame);
-            updateAndRenderParticles();
+        //     PD::drawBitmap(75, 66, Images::EndOfGame);
+        //     updateAndRenderParticles();
 
-            if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
+        //     if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
 
-        }
-        else {
+        // }
+        // else {
 
             PD::drawBitmap(55, 66, Images::Congratulations);
 
-        }
+        // }
 
         if (PC::buttons.pressed(BTN_A)) {
 
+            this->cookie->saveCookie();
+
             if (this->gameStats.level + 1 == Puzzles::Count) {
 
-                this->gameState = GameState::Title_Init;
+                this->gameState = GameState::Congratulations_Init;
 
             }
             else {
@@ -484,7 +492,7 @@ void Game::removeTile(Player &character) {
                 switch (static_cast<Tiles>(board[character.getY()][character.getX()])) {
 
                     case Tiles::Gem_NormalFloor:
-                        board[character.getY()][character.getX()] = Tiles::Gem1_Only;
+                        board[character.getY()][character.getX()] = Tiles::Gem_Only;
                         break;
 
                     default:
@@ -524,6 +532,11 @@ void Game::removeTile(Player &character) {
 
                     switch (test) {
 
+                        case Tiles::LinkedFloor_Alt:
+
+                            board[y][x] = Tiles::LinkedFloor;
+                            break;
+
                         case Tiles::LinkedFloor:
 
                             board[y][x] = Tiles::None;
@@ -544,7 +557,7 @@ void Game::removeTile(Player &character) {
 
                             if (x != character.getXOld() || y != character.getYOld()) {
                                 
-                                board[y][x] = Tiles::Gem1_Only;
+                                board[y][x] = Tiles::Gem_Only;
 
                             }
                             else {

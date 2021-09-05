@@ -44,7 +44,7 @@ void Game::muteTheme() {
 
 
 void Game::playSoundEffect(SoundEffect soundEffect) {
-
+//printf("playSoundEffect %i\n", (uint16_t)soundEffect);
     #ifdef SOUNDS
 
     switch (this->cookie->sfx) {
@@ -84,6 +84,10 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
 
                 case SoundEffect::Tone_07:
                     Audio::play<1>(Sounds::sfx_Tone_07);    
+                    break;               
+
+                case SoundEffect::Tone_08:
+                    Audio::play<1>(Sounds::sfx_Tone_08);    
                     break;               
 
             }
@@ -222,6 +226,7 @@ bool Game::endOfGame() {
                 else {
 
                     if (board[y][x] == Tiles::Button1 ||
+                        board[y][x] == Tiles::Gem_Only ||
                         board[y][x] == Tiles::Gem_SolidFloor ||
                         board[y][x] == Tiles::Gem_LinkedFloor ||
                         board[y][x] == Tiles::Gem_NormalFloor) {
@@ -346,7 +351,7 @@ bool Game::canMoveToTile(int8_t x, int8_t y) {
 
         case Tiles::None:
         case Tiles::Exit:
-        case Tiles::Gem1_Only:
+        case Tiles::Gem_Only:
             return false;
 
         default:

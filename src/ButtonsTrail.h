@@ -52,6 +52,8 @@ class Game {
         void levelSelect();
         void title_Init();
         void title();
+        void congratulations_Init();
+        void congratulations();
 
         void removeTile(Player &character);
         void initGame(uint8_t level);

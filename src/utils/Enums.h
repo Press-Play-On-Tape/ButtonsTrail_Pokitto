@@ -1,7 +1,7 @@
 #pragma once
 
 #define SOUNDS
-#define COOKIE_INITIALISED 34
+#define COOKIE_INITIALISED 35
 
 namespace Constants {
 
@@ -37,21 +37,24 @@ enum class GameState : uint8_t {
     Instructions,
     Game_Init,
     Game,
+    Congratulations_Init,
+    Congratulations,
 };
 
 enum class Tiles : uint8_t {
-    None,           // 0
-    NormalFloor,    // 1
-    SolidFloor,     // 2
-    LinkedFloor,    // 3
-    DoubleFloor,    // 4
-    Button1,        // 5
-    Button2,        // 6
-    Gem_LinkedFloor,  // 7
-    Gem_NormalFloor,  // 8
-    Gem_SolidFloor,  // 9
-    Exit, // 10
-    Gem1_Only,  // 11
+    None,               // 0
+    NormalFloor,        // 1
+    SolidFloor,         // 2
+    LinkedFloor,        // 3
+    DoubleFloor,        // 4
+    Button1,            // 5
+    Button2,            // 6
+    Exit,               // 10
+    LinkedFloor_Alt,    // 11
+    Gem_NormalFloor     = 21,    // 8
+    Gem_SolidFloor      = 22,     // 9
+    Gem_LinkedFloor     = 23,    // 7
+    Gem_Only,           // 12
 };
 
 enum class Direction : uint8_t {
@@ -81,6 +84,7 @@ enum class SoundEffect : uint8_t {
     Tone_05,
     Tone_06,
     Tone_07,
+    Tone_08,
 };
 
 enum class TitleScreenMode : uint8_t {

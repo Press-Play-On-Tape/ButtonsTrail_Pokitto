@@ -10,10 +10,11 @@ namespace Images {
     #include "Tiles/Tile_06_00.h"
     #include "Tiles/Tile_06_01.h"
     #include "Tiles/Tile_06_02.h"
+    #include "Tiles/Tile_10.h"
     #include "Tiles/Tile_11.h"
 
     const uint8_t * const Tiles[] = { 
-        Tile_01, // Never used
+        Tile_01, // 00 Never used
         Tile_01,
         Tile_02,
         Tile_03,
@@ -23,7 +24,8 @@ namespace Images {
         Tile_03,  // 07 Gem Linked Floor 
         Tile_01,  // 08 Gem Normal Floor
         Tile_02,  // 09 Gem Solid Floor 
-        Tile_11,  // 11 Exit
+        Tile_10,  // 10 Exit
+        Tile_11,  // 10 Linked Floor Alt
         Tile_01,  // 10 Gem Only
     };
    

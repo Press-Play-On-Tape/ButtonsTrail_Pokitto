@@ -41,6 +41,8 @@ void Game::renderBoard() {
                 case Tiles::LinkedFloor:
                 case Tiles::Button1:
                 case Tiles::Exit:
+                case Tiles::LinkedFloor_Alt:
+                
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
                                    Images::Tiles[static_cast<uint8_t>(board[y][x])]);
@@ -62,7 +64,7 @@ void Game::renderBoard() {
                     }
                     break;
 
-                case Tiles::Gem1_Only:
+                case Tiles::Gem_Only:
                     {
                         uint8_t frame = (PC::frameCount % 64) / 16;
                         PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
@@ -150,6 +152,8 @@ void Game::renderBoard() {
     // Render puff of smoke ..
 
     if (this->gameStats.xOffset == 0 && this->other.isActive() && this->gameStats.puffOfSmoke > 0) {
+
+        if (this->gameStats.puffOfSmoke == 41) this->playSoundEffect(SoundEffect::Tone_08);
 
         PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset() - 15, 
                         Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 17, 
