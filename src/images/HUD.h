@@ -10,8 +10,6 @@ namespace Images {
     #include "Stars/Star_Hollow.h"
     #include "Stars/Star_Filled_Disabled.h"
     #include "Stars/Star_Hollow_Disabled.h"
-    #include "Congratulations.h"
-    #include "EndOfGame.h"
 
     #include "HUD/Background_Top.h"
     #include "HUD/Background_Bottom.h"

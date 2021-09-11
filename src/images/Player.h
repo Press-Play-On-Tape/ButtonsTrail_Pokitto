@@ -21,5 +21,25 @@ namespace Images {
         Player_Falling_00,
         Player_Falling_01,
     };
+
+    #include "Player/Other_00.h"
+    #include "Player/Other_01.h"
+    #include "Player/Other_02.h"
+    #include "Player/Other_03.h"
+    #include "Player/Other_04.h"
+    #include "Player/Other_05.h"
+    #include "Player/Other_06.h"
+    #include "Player/Other_07.h"
+
+    const uint8_t * const Other[] = { 
+        Other_00,
+        Other_01,
+        Other_02,
+        Other_03,
+        Other_04,
+        Other_05,
+        Other_06,
+        Other_07,
+    };
     
 }

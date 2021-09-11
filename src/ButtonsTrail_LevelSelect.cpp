@@ -15,12 +15,13 @@ void Game::levelSelect_Init() {
 
     this->gameState = GameState::LevelSelect;
 
-    levelSelectVars.cursor = this->cookie->levelCurrent;
+    this->levelSelectVars.cursor = this->cookie->levelCurrent;
     this->gameStats.maxLevel = this->cookie->levelMax;
-    
+    this->characterVariables.armCount = 0;
+
     if (this->gameStats.maxLevel <= LEVELS_TO_SHOW / 2)                                 { levelSelectVars.topRow = 0; }
     else if (levelSelectVars.cursor <= LEVELS_TO_SHOW / 2)                              { levelSelectVars.topRow = 0; }
-    else if (levelSelectVars.cursor > Puzzles::Count - (LEVELS_TO_SHOW / 2))            { levelSelectVars.topRow = Puzzles::Count - LEVELS_TO_SHOW; }
+    else if (levelSelectVars.cursor > Puzzles::Count - 1 - (LEVELS_TO_SHOW / 2))        { levelSelectVars.topRow = Puzzles::Count - 1 -LEVELS_TO_SHOW; }
     else                                                                                { levelSelectVars.topRow = levelSelectVars.cursor - 3; }
 }
 
@@ -30,7 +31,7 @@ void Game::levelSelect_Init() {
 //
 void Game::levelSelect() { 
 
-    PD::drawBitmap(30, 7, Images::LevelSelect);
+    PD::drawBitmap(38, 7, Images::LevelSelect);
     PD::setColor(2);
 
 
@@ -107,7 +108,7 @@ void Game::levelSelect() {
 
         if (this->gameStats.maxLevel <= LEVELS_TO_SHOW / 2)                                 { levelSelectVars.topRow = 0; }
         else if (levelSelectVars.cursor <= LEVELS_TO_SHOW / 2)                              { levelSelectVars.topRow = 0; }
-        else if (levelSelectVars.cursor > Puzzles::Count - (LEVELS_TO_SHOW / 2))            { levelSelectVars.topRow = Puzzles::Count - LEVELS_TO_SHOW; }
+        else if (levelSelectVars.cursor > Puzzles::Count - 1 - (LEVELS_TO_SHOW / 2))        { levelSelectVars.topRow = Puzzles::Count - 1 - LEVELS_TO_SHOW; }
         else                                                                                { levelSelectVars.topRow = levelSelectVars.cursor - 3; }
 
     }
@@ -119,7 +120,7 @@ void Game::levelSelect() {
 
         if (this->gameStats.maxLevel <= LEVELS_TO_SHOW / 2)                                 { levelSelectVars.topRow = 0; }
         else if (levelSelectVars.cursor <= LEVELS_TO_SHOW / 2)                              { levelSelectVars.topRow = 0; }
-        else if (levelSelectVars.cursor > Puzzles::Count - (LEVELS_TO_SHOW / 2))            { levelSelectVars.topRow = Puzzles::Count - LEVELS_TO_SHOW; }
+        else if (levelSelectVars.cursor > Puzzles::Count - 1 - (LEVELS_TO_SHOW / 2))        { levelSelectVars.topRow = Puzzles::Count - 1 - LEVELS_TO_SHOW; }
         else                                                                                { levelSelectVars.topRow = levelSelectVars.cursor - 3; }
 
     }
@@ -129,7 +130,7 @@ void Game::levelSelect() {
 
     uint8_t y = 62;
 
-    for (uint8_t i = levelSelectVars.topRow; i <= (levelSelectVars.topRow + LEVELS_TO_SHOW > Puzzles::Count ? Puzzles::Count : levelSelectVars.topRow + LEVELS_TO_SHOW); i++) {
+    for (uint8_t i = levelSelectVars.topRow; i <= (levelSelectVars.topRow + LEVELS_TO_SHOW > Puzzles::Count - 1 ? Puzzles::Count - 1 : levelSelectVars.topRow + LEVELS_TO_SHOW); i++) {
 
         uint8_t enabled = i <= gameStats.maxLevel;
 

@@ -25,10 +25,11 @@ class Game {
         GameState gameState = GameState::Splash;
         GameStats gameStats;
         Player player;
+        Player other;
         FallingTile fallingTiles[Constants::FallingTilesCount];
         Arrow arrows[3];
 
-        uint8_t board[Constants::BoardHeight][Constants::BoardWidth];
+        Tiles board[Constants::BoardHeight][Constants::BoardWidth];
         Particle particles[Constants::ParticlesMax];
 
         GameCookie *cookie;
@@ -51,8 +52,10 @@ class Game {
         void levelSelect();
         void title_Init();
         void title();
+        void congratulations_Init();
+        void congratulations();
 
-        void removeTile();
+        void removeTile(Player &character);
         void initGame(uint8_t level);
         bool endOfGame();
         void launchParticles(int16_t x, int16_t y, bool firstHalf);
@@ -63,6 +66,10 @@ class Game {
         void playTheme();
         void muteTheme();
         void playSoundEffect(SoundEffect soundEffect);
+        void printBoard();
+        void moveOther();
+        bool canMoveToTile(int8_t x, int8_t y);
+        void renderLargeCharacter();
 
 };
 

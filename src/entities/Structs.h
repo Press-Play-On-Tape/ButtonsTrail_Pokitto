@@ -11,7 +11,7 @@ struct SplashScreenVariables {
 
 struct CharacterVariables {
 
-    uint8_t armCount = 0;
+    uint16_t armCount = 0;
     Direction armDirection = Direction::Down;
 
 };
@@ -22,21 +22,23 @@ struct GameStats {
 
         GameStats() { };
 
+        TitleScreenMode titleSel = TitleScreenMode::NewGame;
+        GameMode mode= GameMode::NoOther;
+        
         uint8_t level = 0;
         uint8_t maxLevel = 0;
         
-        TitleScreenMode titleSel = TitleScreenMode::NewGame;
         int16_t xOffset = 0;
         uint8_t yOffset = 0;
         uint16_t moves = 0;
         uint8_t minimumMoves = 0;
         uint8_t instruction = 0;
-        uint8_t start = 0;
         uint8_t exit = 0;
 
         bool endOfGame = false;
         uint8_t endOfGameCount = 0;
         uint8_t stars = 0;
+        uint8_t puffOfSmoke = 0;
 
         void reset() {
         }

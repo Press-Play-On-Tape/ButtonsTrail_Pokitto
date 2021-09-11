@@ -59,6 +59,14 @@ void Game::loop() {
             game();
             break;
 
+        case GameState::Congratulations_Init:
+            congratulations_Init();
+            congratulations();
+            break;
+
+        case GameState::Congratulations:
+            congratulations();
+            break;
     }
 
 }

@@ -20,7 +20,6 @@ void Game::splashScreen() {
 
     if (justPressed > 0) {
 
-        //this->playTheme(this->cookie->track);
         this->gameState = GameState::Title_Init;
 
     }

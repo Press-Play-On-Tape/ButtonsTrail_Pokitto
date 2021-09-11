@@ -17,8 +17,8 @@ void Game::renderBoard() {
 
             PD::drawBitmap(Constants::Board_XOffset + (fallingTile.getX() * Constants::CellWidth_PlusBorder), 
                            Constants::Board_YOffset + (fallingTile.getY() * Constants::CellHeight_PlusBorder) + fallingTile.getYOffset() + this->gameStats.yOffset, 
-                           Images::Tile_Falling[fallingTile.getImageIndex()]);
-            
+                           Images::Tile_Falling[fallingTile.getImageIndex() + (fallingTile.isLinked() ? 3 : 0)]);
+
         }
 
     }
@@ -37,13 +37,43 @@ void Game::renderBoard() {
 
                 case Tiles::NormalFloor:
                 case Tiles::DoubleFloor:
-                case Tiles::SolidFloor1:
-                case Tiles::SolidFloor2:
+                case Tiles::SolidFloor:
+                case Tiles::LinkedFloor:
                 case Tiles::Button1:
+                case Tiles::Exit:
+                case Tiles::LinkedFloor_Alt:
+                
                     PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
-                                   Images::Tiles[board[y][x]]);
+                                   Images::Tiles[static_cast<uint8_t>(board[y][x])]);
                     break;
+
+                case Tiles::Gem_LinkedFloor:
+                case Tiles::Gem_NormalFloor:
+                case Tiles::Gem_SolidFloor:
+                    {
+                        uint8_t frame = (PC::frameCount % 64) / 16;
+
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset, 
+                                    Images::Tiles[static_cast<uint8_t>(board[y][x])]);
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset - 4, 
+                                    Images::Gems[frame]);
+
+                    }
+                    break;
+
+                case Tiles::Gem_Only:
+                    {
+                        uint8_t frame = (PC::frameCount % 64) / 16;
+                        PD::drawBitmap(Constants::Board_XOffset + this->gameStats.xOffset + (x * Constants::CellWidth_PlusBorder), 
+                                    Constants::Board_YOffset + (y * Constants::CellHeight_PlusBorder) + this->gameStats.yOffset - 4, 
+                                    Images::Gems[frame]);
+
+                    }
+                    break;
+
 
                 case Tiles::Button2:
                     {
@@ -88,6 +118,8 @@ void Game::renderBoard() {
 
         uint8_t frame = (PC::frameCount % 32) / 16;
 
+        if (this->player.getDirection() == Direction::Left) frame = frame + 2;
+
         if (player.isDying()) {
 
             if (player.isMoving()) {
@@ -113,6 +145,35 @@ void Game::renderBoard() {
                            Images::Players[frame]);
 
         }
+        
+    }
+
+
+    // Render puff of smoke ..
+
+    if (this->gameStats.xOffset == 0 && this->other.isActive() && this->gameStats.puffOfSmoke > 0) {
+
+        if (this->gameStats.puffOfSmoke == 41) this->playSoundEffect(SoundEffect::Tone_08);
+
+        PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset() - 15, 
+                        Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 17, 
+                        Images::Explosion[this->gameStats.puffOfSmoke / 6]);
+        
+    }
+
+
+    // Render other ..
+
+    if (this->gameStats.xOffset == 0 && this->other.isActive() && this->gameStats.puffOfSmoke < 24) {
+
+        uint8_t frame = (PC::frameCount % 32) / 16;
+
+        if (this->other.getDirection() == Direction::Left) frame = frame + 2;
+        if (this->gameStats.mode == GameMode::Attack) frame = frame + 4;
+
+        PD::drawBitmap(Constants::Board_XOffset + (other.getX() * Constants::CellWidth_PlusBorder) + other.getXOffset(), 
+                        Constants::Board_YOffset + (other.getY() * Constants::CellHeight_PlusBorder) + other.getYOffset() + this->gameStats.yOffset - 4, 
+                        Images::Other[frame]);
         
     }
 
