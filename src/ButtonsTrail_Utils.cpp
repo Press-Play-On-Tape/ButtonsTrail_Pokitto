@@ -44,7 +44,7 @@ void Game::muteTheme() {
 
 
 void Game::playSoundEffect(SoundEffect soundEffect) {
-//printf("playSoundEffect %i\n", (uint16_t)soundEffect);
+
     #ifdef SOUNDS
 
     switch (this->cookie->sfx) {
@@ -88,6 +88,10 @@ void Game::playSoundEffect(SoundEffect soundEffect) {
 
                 case SoundEffect::Tone_08:
                     Audio::play<1>(Sounds::sfx_Tone_08);    
+                    break;               
+
+                case SoundEffect::Tone_09:
+                    Audio::play<1>(Sounds::sfx_Tone_09);    
                     break;               
 
             }

@@ -69,6 +69,7 @@ class Game {
         void printBoard();
         void moveOther();
         bool canMoveToTile(int8_t x, int8_t y);
+        void renderLargeCharacter();
 
 };
 

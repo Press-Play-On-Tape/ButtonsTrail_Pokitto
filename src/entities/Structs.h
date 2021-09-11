@@ -11,7 +11,7 @@ struct SplashScreenVariables {
 
 struct CharacterVariables {
 
-    uint8_t armCount = 0;
+    uint16_t armCount = 0;
     Direction armDirection = Direction::Down;
 
 };

@@ -93,9 +93,9 @@ void Game::game() {
 
 
 
-    if (PC::buttons.pressed(BTN_C)) this->gameStats.moves = 0;// SJH remove
-    if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_UP) && this->gameStats.level > 0) { this->gameStats.level--; initGame(this->gameStats.level); }// SJH remove
-    if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_DOWN) && this->gameStats.level < Puzzles::Count) { this->gameStats.level++; initGame(this->gameStats.level); }// SJH remove
+    // if (PC::buttons.pressed(BTN_C)) this->gameStats.moves = 0;// SJH remove
+    // if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_UP) && this->gameStats.level > 0) { this->gameStats.level--; initGame(this->gameStats.level); }// SJH remove
+    // if ((PC::buttons.pressed(BTN_C) || PC::buttons.repeat(BTN_C, 1)) && PC::buttons.pressed(BTN_DOWN) && this->gameStats.level < Puzzles::Count) { this->gameStats.level++; initGame(this->gameStats.level); }// SJH remove
     
     if (PC::buttons.pressed(BTN_B) || PC::buttons.repeat(BTN_B, 1)) { // Exit
 
@@ -299,9 +299,7 @@ void Game::game() {
         
         if (this->gameStats.xOffset == 0) {
 
-            #ifdef SOUNDS
             this->playSoundEffect(SoundEffect::Tone_07);
-            #endif
 
         }
 
@@ -368,32 +366,15 @@ void Game::game() {
             }
 
             this->cookie->levelRating[this->gameStats.level] = this->gameStats.stars;
-//printf("this->cookie->saveCookie() 1\n");
-            // this->cookie->saveCookie();
 
         }
         else if (gameStats.endOfGameCount == 10) {
 
-            #ifdef SOUNDS
-//printf("tone04\n");
             this->playSoundEffect(SoundEffect::Tone_04);
-            #endif
 
         }
 
-        // if (this->gameStats.level + 1 == Puzzles::Count) {
-
-        //     PD::drawBitmap(75, 66, Images::EndOfGame);
-        //     updateAndRenderParticles();
-
-        //     if (PC::frameCount % 32 == 0) launchParticles(random(32, 188), random(16, 120), PC::frameCount % 64 == 0);
-
-        // }
-        // else {
-
-            PD::drawBitmap(55, 66, Images::Congratulations);
-
-        // }
+        PD::drawBitmap(55, 66, Images::Congratulations);
 
         if (PC::buttons.pressed(BTN_A)) {
 
@@ -429,40 +410,28 @@ void Game::removeTile(Player &character) {
 
             case Tiles::Button1:
 
-                #ifdef SOUNDS
                 this->playSoundEffect(SoundEffect::Tone_03);
                 soundPlayed = true;
-                #endif
-
                 break;
 
             case Tiles::Gem_NormalFloor:
 
-                #ifdef SOUNDS
                 this->playSoundEffect(SoundEffect::Tone_03);
                 soundPlayed = true;
-                #endif
-
                 board[character.getYNew()][character.getXNew()] = Tiles::NormalFloor;
                 break;
 
             case Tiles::Gem_SolidFloor:
 
-                #ifdef SOUNDS
                 this->playSoundEffect(SoundEffect::Tone_03);
                 soundPlayed = true;
-                #endif
-
                 board[character.getYNew()][character.getXNew()] = Tiles::SolidFloor;
                 break;
 
             case Tiles::Gem_LinkedFloor:
 
-                #ifdef SOUNDS
                 this->playSoundEffect(SoundEffect::Tone_03);
                 soundPlayed = true;
-                #endif
-
                 board[character.getYNew()][character.getXNew()] = Tiles::LinkedFloor;
                 break;
 
@@ -477,10 +446,8 @@ void Game::removeTile(Player &character) {
         case Tiles::NormalFloor:
         case Tiles::Gem_NormalFloor:
 
-            #ifdef SOUNDS
             if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_05);
             soundPlayed = true;
-            #endif
 
             if (character.getCharacterType() == Character::Player) {
 
@@ -519,10 +486,8 @@ void Game::removeTile(Player &character) {
         case Tiles::LinkedFloor:
         case Tiles::Gem_LinkedFloor:
 
-            #ifdef SOUNDS
             if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_05);
             soundPlayed = true;
-            #endif
 
             for (uint16_t y = 0; y < Constants::BoardHeight; y++){
 
@@ -591,11 +556,8 @@ void Game::removeTile(Player &character) {
 
         case Tiles::DoubleFloor:
 
-            #ifdef SOUNDS
             if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
             soundPlayed = true;
-            #endif
-
             board[character.getY()][character.getX()] = Tiles::NormalFloor;
             break;
 
@@ -603,11 +565,8 @@ void Game::removeTile(Player &character) {
 
             if (character.getCharacterType() == Character::Player) {
 
-                #ifdef SOUNDS
                 if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
                 soundPlayed = true;
-                #endif
-
                 board[character.getY()][character.getX()] = Tiles::Button2;
 
             }
@@ -617,11 +576,8 @@ void Game::removeTile(Player &character) {
 
             if (character.getCharacterType() == Character::Player) {
 
-                #ifdef SOUNDS
                 if (!soundPlayed) this->playSoundEffect(SoundEffect::Tone_06);
                 soundPlayed = true;
-                #endif
-
                 board[character.getY()][character.getX()] = Tiles::SolidFloor;
 
             }
@@ -630,11 +586,8 @@ void Game::removeTile(Player &character) {
 
         case Tiles::Button2:
 
-            #ifdef SOUNDS
             if (!soundPlayed && character.getCharacterType() == Character::Player) this->playSoundEffect(SoundEffect::Tone_06);
             soundPlayed = true;
-            #endif
-
             board[character.getY()][character.getX()] = Tiles::Button1;
             break;
 

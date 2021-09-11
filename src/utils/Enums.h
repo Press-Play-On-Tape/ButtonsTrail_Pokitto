@@ -1,7 +1,7 @@
 #pragma once
 
 #define SOUNDS
-#define COOKIE_INITIALISED 35
+#define COOKIE_INITIALISED 39
 
 namespace Constants {
 
@@ -49,12 +49,12 @@ enum class Tiles : uint8_t {
     DoubleFloor,        // 4
     Button1,            // 5
     Button2,            // 6
-    Exit,               // 10
-    LinkedFloor_Alt,    // 11
-    Gem_NormalFloor     = 21,    // 8
-    Gem_SolidFloor      = 22,     // 9
-    Gem_LinkedFloor     = 23,    // 7
-    Gem_Only,           // 12
+    Exit = 10,          // 10
+    Gem_Only = 12,           // 12
+    LinkedFloor_Alt = 13,  // 13
+    Gem_NormalFloor     = 21,    // 21
+    Gem_SolidFloor      = 22,     // 22
+    Gem_LinkedFloor     = 23,    // 23
 };
 
 enum class Direction : uint8_t {
@@ -85,6 +85,7 @@ enum class SoundEffect : uint8_t {
     Tone_06,
     Tone_07,
     Tone_08,
+    Tone_09,
 };
 
 enum class TitleScreenMode : uint8_t {

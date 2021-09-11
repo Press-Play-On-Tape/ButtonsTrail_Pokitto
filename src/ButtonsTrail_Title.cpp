@@ -191,9 +191,6 @@ void Game::title() {
             
     }
 
-    // PD::drawBitmap(0, 131, Images::Fire[(PC::frameCount % 60) / 5]);
-    // PD::drawBitmap(184, 131, Images::Fire[((PC::frameCount + 6) % 60) / 5]);
-
     int8_t spacing[] = { 0, 1, 0, -1, -2, 0, 1, 2, 1, 3, 0, 1, -2, 1 };
 
     for (int16_t x = -18, i = 0; x < 220;) {

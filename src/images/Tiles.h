@@ -2,6 +2,7 @@
 
 namespace Images {
 
+    #include "Tiles/Tile_00.h"
     #include "Tiles/Tile_01.h"
     #include "Tiles/Tile_02.h"
     #include "Tiles/Tile_03.h"
@@ -11,22 +12,32 @@ namespace Images {
     #include "Tiles/Tile_06_01.h"
     #include "Tiles/Tile_06_02.h"
     #include "Tiles/Tile_10.h"
-    #include "Tiles/Tile_11.h"
 
     const uint8_t * const Tiles[] = { 
-        Tile_01, // 00 Never used
-        Tile_01,
-        Tile_02,
-        Tile_03,
-        Tile_04,
-        Tile_05, 
-        Tile_06_00,
-        Tile_03,  // 07 Gem Linked Floor 
-        Tile_01,  // 08 Gem Normal Floor
-        Tile_02,  // 09 Gem Solid Floor 
-        Tile_10,  // 10 Exit
-        Tile_11,  // 10 Linked Floor Alt
-        Tile_01,  // 10 Gem Only
+        Tile_00, // 00 Never used
+        Tile_01, // 01 Normal
+        Tile_02, // 02 Solid
+        Tile_03, // 03 Linked
+        Tile_04, // 04 Double
+        Tile_05, // 05 Button1
+        Tile_00, // 06 Button2
+        Tile_00, // 07 Never used
+        Tile_00, // 08 Never used
+        Tile_00, // 09 Never used
+        Tile_10, // 10 Exit
+        Tile_00, // 11 Never used
+        Tile_01, // 12 Gem Only
+        Tile_00, // 13 Never used
+        Tile_00, // 14 Never used
+        Tile_00, // 15 Never used
+        Tile_00, // 16 Never used
+        Tile_00, // 17 Never used
+        Tile_00, // 18 Never used
+        Tile_00, // 19 Never used
+        Tile_00, // 20 Never used
+        Tile_01, // 22 Gem Normal Floor
+        Tile_02, // 23 Gem Solid Floor 
+        Tile_03, // 21 Gem Linked Floor 
     };
    
     const uint8_t * const Tile_06[] = { 

@@ -15,9 +15,10 @@ void Game::levelSelect_Init() {
 
     this->gameState = GameState::LevelSelect;
 
-    levelSelectVars.cursor = this->cookie->levelCurrent;
+    this->levelSelectVars.cursor = this->cookie->levelCurrent;
     this->gameStats.maxLevel = this->cookie->levelMax;
-    
+    this->characterVariables.armCount = 0;
+
     if (this->gameStats.maxLevel <= LEVELS_TO_SHOW / 2)                                 { levelSelectVars.topRow = 0; }
     else if (levelSelectVars.cursor <= LEVELS_TO_SHOW / 2)                              { levelSelectVars.topRow = 0; }
     else if (levelSelectVars.cursor > Puzzles::Count - 1 - (LEVELS_TO_SHOW / 2))        { levelSelectVars.topRow = Puzzles::Count - 1 -LEVELS_TO_SHOW; }
